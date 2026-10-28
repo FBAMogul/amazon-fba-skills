@@ -1,11 +1,11 @@
 ---
 name: seller-central-reports
-description: Use when the user asks about their Amazon Seller Central reports or data - orders, sales, traffic, fees, settlements, transactions, inventory, stock movements, returns, reimbursements, removals, listings, account health or Business Reports - when reading a report file downloaded from Seller Central or pulled through the Selling Partner API (SP-API), or when building a dashboard or spreadsheet from Amazon seller data. Says where each report is in Seller Central, which API call and role gets it, how far back Amazon goes, what every column means, and the traps in the data, for UK sellers.
+description: Use when the user asks about their Amazon Seller Central reports or data - orders, sales, traffic, fees, settlements, transactions, inventory, stock movements, returns, reimbursements, removals, listings, account health, advertising (Sponsored Products) or Business Reports - when reading a report file downloaded from Seller Central or the Ads console or pulled through the Selling Partner API (SP-API) or the Amazon Ads API, or when building a dashboard or spreadsheet from Amazon seller data. Says where each report is in Seller Central, which API call and role gets it, how far back Amazon goes, what every column means, and the traps in the data, for UK sellers.
 ---
 
 # Seller Central reports
 
-This pack describes the Amazon Seller Central reports a UK FBA seller can download or pull through the Selling Partner API (SP-API): where each one is, how to get it, what every column means, and the traps in the data. It was researched in October 2026 from Amazon's own pages and checked against a real UK seller's report files, and its menu paths and Seller Central downloads were checked in Seller Central UK on 28 Oct 2026. Amazon changes its reports, menus and rules without much notice, so treat a page as a strong starting point, not the last word.
+This pack describes the Amazon Seller Central reports a UK FBA seller can download or pull through the Selling Partner API (SP-API), plus the Sponsored Products ads reports from the Ads console or the Amazon Ads API: where each one is, how to get it, what every column means, and the traps in the data. It was researched in October 2026 from Amazon's own pages and checked against a real UK seller's report files (all but the ads reports page, which is from Amazon's docs only), and its menu paths and Seller Central downloads were checked in Seller Central UK on 28 Oct 2026. Amazon changes its reports, menus and rules without much notice, so treat a page as a strong starting point, not the last word.
 
 UK accounts are in Amazon's EU region (endpoint `sellingpartnerapi-eu.amazon.com`, UK marketplace ID `A1F83G8C2ARO7P`), and a UK account often takes part in several EU stores as well as amazon.co.uk.
 
@@ -107,7 +107,7 @@ Whatever the position, put both sides on the same basis before joining or compar
 
 ## Report pages
 
-One page per report in `references/`, each with where to find it, the API call and role, how far back Amazon goes, every column, personal data, the questions it answers and the traps seen in real data. "Amazon:" gives Amazon's history limit.
+One page per report in `references/`, each with where to find it, the API call and role, how far back Amazon goes, every column, personal data, the questions it answers and the traps seen in real data (the ads page's traps come from Amazon's documentation, as it wasn't checked against a real file). "Amazon:" gives Amazon's history limit.
 
 **Orders and sales**
 - [orders](references/orders.md): the All Orders report: every order placed, FBA and seller-fulfilled, one row per order item, by purchase date. Amazon: 2 years (older orders only through Archived Order Reports), at most 30 days per request.
@@ -125,6 +125,9 @@ One page per report in `references/`, each with where to find it, the API call a
 - [seller_economics](references/seller_economics.md): Data Kiosk Seller Economics: sales, every fee by type, ad spend, the seller's entered costs and net proceeds per SKU per store, by month. Amazon: 2 years.
 - [date_range_transactions](references/date_range_transactions.md): the Date Range transaction report from Seller Central's Reports Repository (CSV): every posted transaction with its fees, released or deferred. Seller Central only; the API route to the same data is `transactions`.
 - [vat_transactions](references/vat_transactions.md): the Amazon VAT Transactions Report: every sale, refund and Amazon fee with VAT amounts, rates and departure and arrival countries, one month per file.
+
+**Advertising** (the Amazon Ads console and Amazon Ads API, not the SP-API)
+- [ads_reports](references/ads_reports.md): Sponsored Products reports (campaign, placement, targeting, search term, advertised and purchased product, budget): cost, clicks, sales credited to ads within 7 days, ACOS and ROAS, and how ad charges reach the payment reports; Sponsored Brands and Display in brief. Written from Amazon's docs, not checked against a real file. Amazon: unified reporting and the Ads API's v1 Reporting API, 24 months by day or week and 6 years by month; the older Sponsored ads reports, 60 days to 5 years by report, no new ones from 17 Dec 2026 and deleted after 31 Dec 2026; Ads API v3, 60 to 95 days.
 
 **Stock movements and FBA events**
 - [ledger_detail](references/ledger_detail.md): every FBA stock movement: customer shipments, receipts, returns, removals, transfers, lost, found, damaged, disposed. Amazon: 18 months. Can leave out stock held in EU centres.

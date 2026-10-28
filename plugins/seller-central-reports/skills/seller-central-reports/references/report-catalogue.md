@@ -404,6 +404,8 @@ This table covers the Orders API only. The Amazon Fulfilled Shipments report ([f
 
 ## 7. Amazon Ads API (separate from SP-API)
 
+Pack page: [ads_reports](ads_reports.md) covers the Sponsored Products reports a seller reads in the Ads console or through this API: report types, columns, attribution, VAT, time zone, history and how ad charges reach the payment reports.
+
 **Registration [ads-onb] [ads-apply]:**
 
 - Separate from SP-API. Create an Amazon Developer account and a **Login with Amazon client**, then apply as a **Direct Advertiser** (the form is at advertising.amazon.com/partner-network/register-api), then assign API access to the LwA app.
@@ -424,8 +426,8 @@ This table covers the Orders API only. The Amazon Fulfilled Shipments report ([f
 
 | Surface | What | History | Limits | Status |
 |---|---|---|---|---|
-| **Reporting API v1** (new, "Amazon Ads v1") | Ad-hoc reports combining any dimensions, across ad products and accounts: campaign, ad group, ad, targeting, **search term**, advertised and purchased product, placement, plus metrics such as impressions, clicks, cost, purchases, sales, ROAS (7-day attribution for sellers) | **Daily data 24 months** (max 120-day range per report). Weekly 24 months. **Monthly and yearly 6 years.** Hourly 14 days. | **1 concurrent report per advertiser** (~100 reports/day); rate can be as low as 1 request/second | Current: generally available since 30 Sep 2026 **[ads-releases]** (Amazon's 8 Jun 2026 unified reporting announcement still calls it "Reporting API (beta)" **[ads-unified]**) | [ads-v1] [ads-v1-dates] [ads-v1-limits] [ads-unified] |
-| **Reporting v3** | Report types: SP campaigns, targeting, search term, advertised product, purchased product; SB and SD equivalents; gross and invalid traffic | Retention: **SP 95 days** (SP search term 65); **SB 60 days** (SB purchased product 731); **SD 65 days**. Max 31 days per request. | 1–2 requests per advertiser per report type per day recommended. Up to 3 hours to generate. | **Shut off after 30 Jun 2027** | [ads-v3types] [ads-v3faq] [ads-v3-campaign] [ads-v3-st] [ads-v3-tgt] [ads-v3-ap] [ads-v3-pp] [ads-rep] |
+| **Reporting API v1** (new, "Amazon Ads v1") | Ad-hoc reports combining any dimensions, across ad products and accounts: campaign, ad group, ad, targeting, **search term**, advertised and purchased product, placement, plus metrics such as impressions, clicks, cost, purchases, sales, ROAS (7-day attribution for sellers) | **Daily data 24 months** (max 120-day range per report). Weekly 24 months. **Monthly and yearly 6 years.** Hourly 14 days. | **1 concurrent report per client ID**, "not per advertiser account" (~100 reports/day) **[ads-v1] [ads-v1-limits]**; Amazon's reporting overview still says per advertiser **[ads-rep]**. Rate can be as low as 1 request/second | Current: generally available since 30 Sep 2026 **[ads-releases]**. Amazon's 8 Jun 2026 unified reporting announcement still lists it as "Reporting API (beta)" **[ads-unified]** | [ads-v1] [ads-v1-dates] [ads-v1-limits] [ads-unified] [ads-releases] |
+| **Reporting v3** | Report types: SP campaigns, targeting, search term, advertised product, purchased product; SB and SD equivalents; gross and invalid traffic | Retention: **SP 95 days** (SP search term 65); **SB 60 days** (SB purchased product 731); **SD 65 days**. Max 31 days per request (SB purchased product 731). | 1–2 requests per advertiser per report type per day recommended. Up to 3 hours to generate. | **Shut off after 30 Jun 2027** | [ads-v3types] [ads-v3faq] [ads-v3-campaign] [ads-v3-st] [ads-v3-tgt] [ads-v3-ap] [ads-v3-pp] [ads-rep] |
 | **Amazon Marketing Stream v2** | Push to your own S3 as Parquet, updated as often as every 15 minutes, matching the v1 Reporting API fields | Backfills up to 70 days when you subscribe | No polling or throttling | Recommended for recurring and large-scale reporting | [ads-rep] [ads-stream] |
 | Exports | Campaign, ad group, ad and target **metadata** (budgets, status, bids) | Current state | — | — | [ads-rep] |
 | **Amazon Ads MCP Server** | Official MCP server: Claude and other agents can query performance, list accounts and invoices, create reports and update campaigns | — | Expert tools (e.g. AMC SQL) in closed beta | — | [ads-mcp] |
@@ -433,7 +435,7 @@ This table covers the Orders API only. The Amazon Fulfilled Shipments report ([f
 **Data caveats:**
 
 - Conversions restate for up to 60 days, so re-pull monthly **[ads-rep]**.
-- The **API search-term report only includes terms with at least one click**, unlike the Ads console report **[ads-v3faq]**.
+- The **API search-term report only includes terms with at least one click** **[ads-v3faq]**. Amazon's pages disagree on whether the Ads console report is any different: the v3 FAQ says the console report has every search term that had an impression, clicked or not **[ads-v3faq]**, but the console's current help says its search term report "includes only the search terms that resulted in at least 1 ad click" **[ads-st-help]**.
 
 ---
 
@@ -463,8 +465,8 @@ Rates are Amazon's defaults per account–application pair. Some are dynamic and
 | FBA Inventory `getInventorySummaries` | 2 req/s, burst 2. Changed-since ≤18 months. | — | [fbainv-model] |
 | Data Kiosk | Same rate limits as Reports. One running query per dataset per seller/app. Start ≤2 years back. | Run queries one after another | [dk] [dk-wf] [dk-sa] |
 | Replenishment | Trailing 2 years | — | [replen-model] |
-| Ads Reporting v1 | 1 concurrent report per advertiser | Run reports one at a time, or use Marketing Stream | [ads-v1-limits] |
-| Ads v3 | SP 95 days, SB 60, SD 65 days retention; 31 days per request | Can't backfill 12 months on v3. Use v1 (24 months). | [ads-v3-campaign] |
+| Ads Reporting v1 | 1 concurrent report per client ID, not per advertiser account (Amazon's reporting overview still says per advertiser) | Run reports one at a time, or use Marketing Stream | [ads-v1] [ads-v1-limits] [ads-rep] |
+| Ads v3 | SP 95 days, SB 60, SD 65 days retention; 31 days per request | Can't backfill 12 months on v3, except the SB purchased product report (731 days). Use v1 (24 months). | [ads-v3-campaign] |
 
 ---
 
@@ -614,6 +616,7 @@ Amazon Ads docs. Markdown mirror base: `https://d3a0d0y2hgofx6.cloudfront.net/en
 - [ads-releases] https://advertising.amazon.com/API/docs/en-us/release-notes/index
 - [ads-v3types] https://d3a0d0y2hgofx6.cloudfront.net/en-us/guides/reporting/v3/report-types/overview.md
 - [ads-v3faq] https://d3a0d0y2hgofx6.cloudfront.net/en-us/guides/reporting/v3/faq.md
+- [ads-st-help] https://advertising.amazon.com/help/G3HEFZYWZF84NPS9 (Ads console help: Sponsored Products search term report)
 - [ads-v3-campaign] https://d3a0d0y2hgofx6.cloudfront.net/en-us/guides/reporting/v3/report-types/campaign.md
 - [ads-v3-st] https://d3a0d0y2hgofx6.cloudfront.net/en-us/guides/reporting/v3/report-types/search-term.md
 - [ads-v3-tgt] https://d3a0d0y2hgofx6.cloudfront.net/en-us/guides/reporting/v3/report-types/targeting.md

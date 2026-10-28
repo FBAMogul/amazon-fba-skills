@@ -1,6 +1,6 @@
 # Seller Central reports: a skill for Claude
 
-This skill teaches Claude (Claude Code, for example in VS Code) about your Amazon Seller Central reports: where each one is, how to download it or pull it through Amazon's Selling Partner API, what every column means, and the traps in the data. With it installed, Claude can help you read your reports and build dashboards without researching it all first.
+This skill teaches Claude (Claude Code, for example in VS Code) about your Amazon Seller Central reports: where each one is, how to download it or pull it through Amazon's Selling Partner API, what every column means, and the traps in the data. It covers your Sponsored Products ads reports from the Amazon Ads console and Amazon Ads API too. With it installed, Claude can help you read your reports and build dashboards without researching it all first.
 
 ## Install it
 
@@ -41,6 +41,6 @@ It's knowledge only. It doesn't connect to Amazon, doesn't hold or ask for any k
 
 ## Check what matters
 
-This skill was researched in October 2026, and its menu paths and Seller Central downloads were checked on 28 Oct 2026. Amazon changes its reports, menus and rules, so check anything that matters (money, stock, account health) against Seller Central before you act on it.
+This skill was researched in October 2026, and its menu paths and Seller Central downloads were checked on 28 Oct 2026. The ads reports page comes from Amazon's documentation only. Amazon changes its reports, menus and rules, so check anything that matters (money, stock, account health) against Seller Central before you act on it.
 
 Not affiliated with or endorsed by Amazon. Licence: [CC BY 4.0](../../LICENSE).

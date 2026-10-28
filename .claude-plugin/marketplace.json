@@ -9,7 +9,7 @@
     {
       "name": "seller-central-reports",
       "source": "./plugins/seller-central-reports",
-      "description": "Every Amazon Seller Central report a UK FBA seller can download or pull through the API: where it is, what each column means, and the traps in the data"
+      "description": "Every Amazon Seller Central report a UK FBA seller can download or pull through the API, plus the Sponsored Products ads reports: where each is, what each column means, and the traps in the data"
     }
   ]
 }
