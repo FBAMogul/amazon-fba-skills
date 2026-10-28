@@ -34,12 +34,12 @@ Tick only what you'll use: the AUP says "Do not request access to or retrieve In
 | Role | What it gets in this pack |
 |---|---|
 | Inventory and Order Tracking | `orders`, `fba_shipments`, `fbm_returns`, `listings_all`, `pan_eu_status` |
-| Amazon Fulfillment | FBA stock, ledger, reimbursements, returns, removals, storage fees, fee preview, inbound plans, inbound problems (`inbound_noncompliance`), `fba_shipment_sales`; also `orders`, `fba_shipments`, `seller_feedback`, `pan_eu_status` |
+| Amazon Fulfillment | FBA stock (whose store list needs Product Listing or Selling Partner Insights, see `store_list`), ledger, reimbursements, FBA returns (`fba_returns`), removals, storage fees, fee preview, inbound plans, inbound problems (`inbound_noncompliance`), `fba_shipment_sales`; also `orders`, `fba_shipments`, `seller_feedback`, `pan_eu_status` |
 | Finance and Accounting | `transactions`, `settlements`, `account` |
 | Selling Partner Insights | `account_health`, `account_health_v1`, `seller_feedback`, `store_list`; also `seller_economics`, with Brand Analytics |
 | Product Listing | `listings_all`, `suppressed_listings`, `pan_eu_status`, `store_list`; also gating checks (Listings Restrictions) |
 | Brand Analytics | `sales_and_traffic` and every Data Kiosk query (`seller_economics`, which also needs Selling Partner Insights, `seller_analytics`, `seller_analytics_asin`) |
-| Pricing (optional) | Live offers and Buy Box prices. No report in this pack needs it. |
+| Pricing (optional) | Live offers and Buy Box prices through Product Pricing v2022-05-01; the v0 offer and price calls also work with Product Listing. No report in this pack needs it. |
 
 - **Brand Analytics:** Amazon's roles page doesn't say it needs Brand Registry, but whether every reseller is granted it isn't confirmed. The Brand Analytics search-term reports still need Brand Registry.
 - **Leave the restricted roles unticked:** Direct-to-Consumer Shipping, Tax Invoicing, Tax Remittance, Professional Services and Selling Partner Support. They unlock buyer names and addresses or support cases, and add a three-stage review: business, security, then a call with an Amazon solution architect ([Amazon](https://developer-docs.amazon/sp-api/docs/onboarding-step-3-create-a-developer-profile)). A seller's dashboard needs none of them; order reports still give the buyer's postcode without them.
