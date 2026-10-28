@@ -13,7 +13,7 @@ That help page also mentions a downloadable "Listing Quality and Suppressed List
 - **Call / report type:** Reports API 2021-06-30 `createReport` with `reportType` `GET_MERCHANTS_LISTINGS_FYP_REPORT` and no `dataStartTime`/`dataEndTime`; then `getReport` and `getReportDocument`. Amazon accepts only one store per report: given several marketplace ids, it uses only the first ([SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/report-type-values-inventory)). So ask store by store, each with that store's marketplace id only ([Store Identifiers](https://developer-docs.amazon/sp-api/docs/store-identifiers)).
 - **Report options:** Amazon accepts `preferredReportDocumentLocale` (the language of the column headers) ([SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/report-type-values-inventory)).
 - **Role:** Product Listing ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
-- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the suppressions as they stood when asked for, so there is no back history.
+- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the suppressions as they stood when asked for. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Columns
 

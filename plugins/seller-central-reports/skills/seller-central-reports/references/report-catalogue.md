@@ -320,7 +320,7 @@ For these roles "you must provide additional information about your data use and
 
 - **Restricted report types** need an RDT to call `getReportDocument`. The RDT must name the specific report-document path **[rdt] [data-access]**.
 - **Orders v2026-01-01 needs no RDT**; the roles alone gate PII **[orders-pii] [orders-mig]**.
-- Orders v0 still uses RDTs (getOrderBuyerInfo and the like) until it's removed in Mar 2027 **[deprec]**.
+- Orders v0 still uses RDTs (getOrderBuyerInfo and the like) until those order-reading calls are removed in Mar 2027 **[deprec]**.
 
 **What PII the Orders API gives for UK/EU (non-US/JP/SG) orders [orders-pii]:**
 

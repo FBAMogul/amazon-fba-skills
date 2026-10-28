@@ -13,7 +13,7 @@ Amazon's help says the **Pan-European FBA Inventory** page shows each ASIN's sta
 - **Call / report type:** Reports API 2021-06-30 `createReport` with `reportType` `GET_PAN_EU_OFFER_STATUS` and no `dataStartTime`/`dataEndTime`; then `getReport` and `getReportDocument`. Amazon makes it available in the Spain, UK, France, Germany and Italy stores only ([SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/report-type-values-inventory)). Amazon doesn't say whether this report wants one marketplace id or several, or what it does with ids for stores where it isn't available. Asked once with every store's marketplace id (Oct 2026), it returned a single file.
 - **Report options:** none.
 - **Role:** any one of Amazon Fulfillment, Inventory and Order Tracking, Pricing, Product Listing, or Direct to Consumer Shipping (restricted) ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
-- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the status as it stood when asked for, so there is no back history.
+- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the status as it stood when asked for. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Columns
 

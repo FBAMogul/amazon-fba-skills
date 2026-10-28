@@ -11,7 +11,7 @@ Checked in Seller Central UK on 28 Oct 2026: **Products > Product reports**, whi
 - **Call / report type:** Reports API 2021-06-30 `createReport` with `reportType` `GET_MERCHANT_LISTINGS_ALL_DATA` and no `dataStartTime`/`dataEndTime`; then `getReport` and `getReportDocument`. Amazon accepts only one store per report: given several marketplace ids, it uses only the first ([SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/report-type-values-inventory)). So ask store by store, each with that store's marketplace id only (the UK is `A1F83G8C2ARO7P`, Germany `A1PA6795UKMFR9`: [Store Identifiers](https://developer-docs.amazon/sp-api/docs/store-identifiers)).
 - **Report options:** Amazon accepts `custom` and `preferredReportDocumentLocale` (the language of the column headers) ([SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/report-type-values-inventory)).
 - **Role:** any one of Inventory and Order Tracking, Pricing, Product Listing, or Direct to Consumer Shipping (restricted) ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
-- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the listings as they stood when asked for, so there is no back history.
+- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the listings as they stood when asked for. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Columns
 

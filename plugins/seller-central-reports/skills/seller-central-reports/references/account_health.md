@@ -13,7 +13,7 @@ Amazon's Seller Performance Report, which "contains the individual performance m
   - The schema has one `accountStatuses` entry and one `performanceMetrics` entry for each requested marketplace ([schema](https://github.com/amzn/selling-partner-api-models/blob/main/schemas/reports/accountHealthReport-2020-11-18.json)).
 - **Report options:** none.
 - **Role:** Selling Partner Insights ([role mappings for report types](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
-- **How far back Amazon goes:** not stated in Amazon's docs. The report takes no date range; each metric carries its own `reportingDateRange`. Amazon keeps no past copies, so history starts with the first copy you save.
+- **How far back Amazon goes:** not stated in Amazon's docs. The report takes no date range; each metric carries its own `reportingDateRange`. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Fields
 

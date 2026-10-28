@@ -101,7 +101,7 @@ Whatever the position, put both sides on the same basis before joining or compar
 ## Before you trust a number
 
 - **Recent months still change.** Returns, reimbursements and payments land after the sale, Seller Analytics figures fill in over the following weeks, and removal orders and shipments can change months after the month they were requested in. A report pulled while a month is still running holds only part of it. Download a recent month again before relying on it, and say how recent the file is.
-- **History has limits.** Each report page gives Amazon's limit (also in the index below). Snapshot reports (inventory, listings, account health, fee preview) show only how things stand when asked: Amazon keeps no past copies, so history exists only if the seller saved one each time. The API keeps settlement reports for about 90 days.
+- **History has limits.** Each report page gives Amazon's limit (also in the index below). Snapshot reports (inventory, listings, account health, fee preview) show only how things stand when asked: Amazon can't make one for a past date, so history exists only if the seller saved one each time, or requested one through the API in the last 90 days (`getReports` still lists those). The API keeps settlement reports for about 90 days.
 - **A cancelled report isn't always an error.** Amazon cancels a report when there's no data for the period, or when the request falls inside the report's once-per-period limit ([Reports FAQ](https://developer-docs.amazon/sp-api/docs/reports-faq)). Some reports send a header-only file instead.
 - **Throttling Amazon doesn't document.** Amazon's documented limit for report requests is about one a minute after a burst of 15 (`createReport`: 0.0167 requests a second, burst 15, in [Amazon's Reports API model](https://github.com/amzn/selling-partner-api-models/blob/main/models/reports-api-model/reports_2021-06-30.json)). In practice, after a few quick requests for the same report type, Amazon can return HTTP 429 for that type and keep refusing it for a long while, while still accepting other types. The storage fee report looked to have a small daily limit: if it's refused, wait a day. `fba_shipments` has a documented limit of 12 requests per 8 hours, and Seller Central downloads count towards it.
 
@@ -136,7 +136,7 @@ One page per report in `references/`, each with where to find it, the API call a
 - [inbound_noncompliance](references/inbound_noncompliance.md): problems Amazon found when receiving FBA shipments, with any Unplanned Service fee. Amazon: not stated for the API; Seller Central's Inbound Performance keeps 365 days.
 - [inbound_plans](references/inbound_plans.md): FBA inbound plans (Send to Amazon), one summary per plan. Amazon: current list only.
 
-**Inventory snapshots** (each shows stock as it stands when asked; Amazon keeps no past copies)
+**Inventory snapshots** (each shows stock as it stands when asked; Amazon can't make one for a past date)
 - [inventory_all](references/inventory_all.md): Manage Inventory: FBA stock per SKU by status, archived listings included.
 - [inventory_by_country](references/inventory_by_country.md): FBA stock per SKU per European country.
 - [reserved_inventory](references/reserved_inventory.md): reserved units per SKU, by reason.

@@ -11,7 +11,7 @@ Amazon's estimated referral and FBA fees per SKU for your FBA stock with active 
 - **Call / report type:** Reports API 2021-06-30 `createReport` with `reportType` `GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA`, every store's marketplace id, and `dataStartTime` at least 72 hours before now (for example midnight UTC three days ago) with no `dataEndTime`, and no report options; then poll `getReport` until it's done and fetch the file with `getReportDocument`. Amazon wants `dataStartTime` at least 72 hours before now and `dataEndTime` at now ([SP-API FBA reports](https://developer-docs.amazon/sp-api/docs/report-type-values-fba)); a missing `dataEndTime` defaults to now ([Reports API model](https://github.com/amzn/selling-partner-api-models/blob/main/models/reports-api-model/reports_2021-06-30.json)).
 - **Role:** Amazon Fulfillment or Pricing ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
 - **Limit:** once per day per seller ([SP-API FBA reports](https://developer-docs.amazon/sp-api/docs/report-type-values-fba)). A second request the same day comes back CANCELLED ([Reports FAQ](https://developer-docs.amazon/sp-api/docs/reports-faq)); that isn't a failure, so keep the day's first copy.
-- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the estimate as it stood when asked for, so there is no back history: it starts with the first copy you save.
+- **How far back Amazon goes:** not stated in Amazon's docs. Each file is the estimate as it stood when asked for. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Columns
 

@@ -11,7 +11,7 @@ Not confirmed: no single screen matches this report. Amazon's report page says o
 - **Call / report type:** Reports API 2021-06-30 `createReport` with `reportType` `GET_V1_SELLER_PERFORMANCE_REPORT`, the marketplace ids of the stores you want, and no dates; then `getReport` and `getReportDocument`. Amazon says a report holds data "for all of the specified marketplaces, unless the report type indicates otherwise" ([createReport](https://developer-docs.amazon/sp-api/reference/createreport)); the performance page makes no exception for this report, so one file covers every store asked for. Amazon publishes no XML schema for it: there is none in [schemas/reports](https://github.com/amzn/selling-partner-api-models/tree/main/schemas/reports).
 - **Report options:** none.
 - **Role:** Selling Partner Insights ([role mappings for report types](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types)).
-- **How far back Amazon goes:** not stated in Amazon's docs. The report takes no date range. Amazon keeps no past copies, so history starts with the first copy you save.
+- **How far back Amazon goes:** not stated in Amazon's docs. The report takes no date range. Amazon can't make one for a past date, so history starts with the first copy you save. A copy your app requested in the last 90 days can still be fetched (`getReports`, then `getReportDocument`).
 
 ## Fields
 
