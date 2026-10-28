@@ -1,0 +1,15 @@
+{
+  "name": "fbamogul",
+  "description": "Claude Code skills for Amazon FBA sellers, from FBAMogul",
+  "owner": {
+    "name": "FBAMogul",
+    "url": "https://fbamogul.com"
+  },
+  "plugins": [
+    {
+      "name": "seller-central-reports",
+      "source": "./plugins/seller-central-reports",
+      "description": "Every Amazon Seller Central report a UK FBA seller can download or pull through the API: where it is, what each column means, and the traps in the data"
+    }
+  ]
+}
