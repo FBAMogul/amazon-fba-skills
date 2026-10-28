@@ -40,7 +40,7 @@ Source: [Sellers API model (sellers.json)](https://github.com/amzn/selling-partn
 ## Questions it answers
 
 - Which stores does Amazon count the seller as participating in (`isParticipating`), and has that changed since an earlier copy? It can't say whether listings are live in a store: `hasSuspendedListings` isn't reliable (see below).
-- What store name does the seller trade under in each store (`storeName`)?
+- Does the seller have a store name set in each store? (Have the stripping script add a yes or no column for `storeName`, then drop it; the name itself is the seller's own, shown in Seller Central.)
 - What currency and language does each store use? This helps read per-store figures in the other reports.
 
 ## Traps seen in real data

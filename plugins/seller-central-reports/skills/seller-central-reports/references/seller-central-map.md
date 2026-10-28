@@ -35,7 +35,7 @@ This is written for a UK FBA seller's account under the Amazon Services Europe a
    - Brand-only tools (experiments, Vine, the brand dashboard), which mostly don't apply to a reseller who isn't the brand owner
 4. **History limits matter for a 12-month pull.**
    - The Reports API keeps a generated report for at most 90 days [GETREPORTS]. Settlement reports are created by Amazon and can't be requested [RTV-SET], so in practice settlement reports older than about 90 days won't come through the API **[inference]**. Rebuild that history from the Finances API (180-day windows [TXN]) or from Date Range reports in the UI, which go back to 2012 [H-DRR].
-   - Ads history depends on the report type. The older ones (the Ads console's Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026, and Ads API v3) keep only about 60–95 days **[third-party]** [ADS-RET]. Unified reporting in the Ads console (Measurement and Reporting > Reporting), generally available since 8 Jun 2026 with the UK included, keeps up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data [ADS-UNIFIED]. Through the Ads API, the v1 Reporting API, which Amazon still calls beta, keeps 24 months of daily data and 6 years of monthly ([report-catalogue](report-catalogue.md) §7).
+   - Ads history depends on the report type. The older ones (the Ads console's Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026, and Ads API v3) keep only about 60–95 days **[third-party]** [ADS-RET]. Unified reporting in the Ads console (Measurement and Reporting > Reporting), generally available since 8 Jun 2026 with the UK included, keeps up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data [ADS-UNIFIED]. Through the Ads API, the v1 Reporting API, generally available since 30 Sep 2026 [ADS-API-RELEASES], keeps 24 months of daily data and 6 years of monthly ([report-catalogue](report-catalogue.md) §7).
    - The detailed inventory ledger covers 18 months [H-LEDGER].
    - Business Reports cover about 2 years [H-BR].
 5. **Browser automation rules differ by marketplace.**
@@ -264,7 +264,7 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 12. **Amazon Lending** offers, terms and balance. [FIN-V0]
 13. **Automate Pricing** rules and their history. [H-AUTOPRICE]
 14. **Capacity Manager** reservation-fee history (UI download only). [H-CAPMGR]
-15. **Ads history older than about 60–95 days in the older report types.** It's a retention limit rather than a missing route: the Ads console's Sponsored Ads reports and Ads API v3 keep only that long **[third-party]**, so take longer history from unified reporting in the Ads console (up to 15 months of daily or weekly data, 6 years of monthly) or the Ads API's v1 Reporting API, which Amazon still calls beta ([report-catalogue](report-catalogue.md) §7). [ADS-RET] [ADS-UNIFIED]
+15. **Ads history older than about 60–95 days in the older report types.** It's a retention limit rather than a missing route: the Ads console's Sponsored Ads reports and Ads API v3 keep only that long **[third-party]**, so take longer history from unified reporting in the Ads console (up to 15 months of daily or weekly data, 6 years of monthly) or the Ads API's v1 Reporting API, generally available since 30 Sep 2026 ([report-catalogue](report-catalogue.md) §7). [ADS-RET] [ADS-UNIFIED]
 16. **Date Range summary PDF.** The underlying data is in the Finances API. [H-DRR]
 
 ### Low (or brand-owner only)
@@ -305,12 +305,12 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 | Orders | All Orders covers the past 2 years, 30 days per download. Older orders only through Archived Order Reports (monthly, no PII) | 30-day request window; generated reports kept 30 days | [H-ARCHORD] [RTV-ORD] |
 | Feedback | Report range up to 1 year; generated files kept 30 days | Not stated | [H-FEEDBACK] |
 | Coupons | Expired or cancelled coupons from the last 18 months moved to the new dashboard | — | [H-COUPON] |
-| Ads console reports | Unified reporting (Measurement and Reporting > Reporting; generally available 8 Jun 2026, UK included): up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data. The older Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026: about 60–90 days depending on report **[third-party]** | Ads API v1 Reporting API (still called beta): daily data 24 months, monthly and yearly 6 years. Ads API v3: Sponsored Products 95 days, Sponsored Brands 60, Sponsored Display 65 ([report-catalogue](report-catalogue.md) §7) | [ADS-UNIFIED] [ADS-RET] |
+| Ads console reports | Unified reporting (Measurement and Reporting > Reporting; generally available 8 Jun 2026, UK included): up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data. The older Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026: about 60–90 days depending on report **[third-party]** | Ads API v1 Reporting API (generally available since 30 Sep 2026): daily data 24 months, monthly and yearly 6 years. Ads API v3: Sponsored Products 95 days, Sponsored Brands 60, Sponsored Display 65 ([report-catalogue](report-catalogue.md) §7) | [ADS-UNIFIED] [ADS-RET] |
 | Brand Analytics SQP | — | Monthly: up to 17 months | [RTV-AN] |
 | Account health defect snapshots | — | Data Kiosk: 24 months at monthly granularity; returns lag about 45 days | [SA-DK] |
 | Regulatory compliance tab | 6-month view windows | — | [H-REGCOMP] |
 
-**For 12 months:** everything except old settlement files is reachable. For ads, use unified reporting in the Ads console or the Ads API's v1 Reporting API (still called beta), not the older report types, which keep only about 60–95 days. Take settlement data older than 90 days from the UI (All statements → Request Report, or Date Range reports) or rebuild it from the Finances API.
+**For 12 months:** everything except old settlement files is reachable. For ads, use unified reporting in the Ads console or the Ads API's v1 Reporting API (generally available since 30 Sep 2026), not the older report types, which keep only about 60–95 days. Take settlement data older than 90 days from the UI (All statements → Request Report, or Date Range reports) or rebuild it from the Finances API.
 
 ---
 
@@ -449,6 +449,7 @@ They point instead to "Authorized Partners".
 - [GH-5179] https://github.com/amzn/selling-partner-api-models/discussions/5179
 
 **Amazon Ads**
+- [ADS-API-RELEASES] https://advertising.amazon.com/API/docs/en-us/release-notes/index
 - [ADS] https://advertising.amazon.com/API
 - [ADS-ABOUT] https://advertising.amazon.com/about-api
 - [ADS-UNIFIED] https://advertising.amazon.com/resources/whats-new/streamline-campaign-analysis-with-unified-reporting (8 Jun 2026)
