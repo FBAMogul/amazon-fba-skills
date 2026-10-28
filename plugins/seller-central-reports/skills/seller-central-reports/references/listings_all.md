@@ -46,7 +46,7 @@ Amazon defines none of these columns; meanings marked "by name" are read from th
 | `add-delete` | Legacy feed field. | Blank in every file checked. |
 | `pending-quantity` | Not defined. | Filled only on seller-fulfilled (`DEFAULT`) rows. |
 | `fulfillment-channel` | By name, who fulfils the listing. | `AMAZON_EU` (FBA) or `DEFAULT` (seller-fulfilled). |
-| `merchant-shipping-group` | By name, the shipping template. | `Migrated Template` in the UK; in the store's language elsewhere (for example `Standardvorlage Amazon` in Germany). |
+| `merchant-shipping-group` | By name, the shipping template. | `Migrated Template` in the UK; in the store's language elsewhere. |
 | `status` | By name, the listing status. | `Active`, `Inactive` or `Incomplete`. |
 | `Minimum order quantity` | Not in Amazon's docs. | Blank in every file checked. Capitalised, with spaces. |
 | `Sell remainder` | Not in Amazon's docs. | Blank in every file checked. |

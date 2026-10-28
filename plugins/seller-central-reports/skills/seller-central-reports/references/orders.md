@@ -43,7 +43,7 @@ Tab-separated text, header row first. Columns as seen in a real UK seller's file
 | `shipping-tax` | The delivery tax the buyer paid. | |
 | `gift-wrap-price` | The amount the buyer paid for gift wrap. | **Includes VAT**, like `item-price` and unlike `gift-wrap-price` in `fba_shipments`: it equals `transactions`' `GiftwrapPrincipal` plus `GiftwrapTax`, and `fba_shipments`' gift wrap price plus tax. |
 | `gift-wrap-tax` | The gift wrap tax the buyer paid. | **The VAT already inside `gift-wrap-price`, not extra:** about 1/6 of it on a 20% row. Never add it to `gift-wrap-price`. |
-| `item-promotion-discount` | Total of all promotion discounts applied to the order item. | **Positive** here (negative in `fba_shipments`). **Net of VAT**, while `item-price` includes VAT and `item-tax` is the VAT after the promotion. So on a 20% row the buyer paid `item-price` − 1.2 × `item-promotion-discount` (within 1p a unit of `transactions`); subtracting the discount alone overstates it by the discount's VAT. On rows with blank `item-tax` (no VAT, e.g. exports), subtract the discount as it is. In `transactions` the discount equals `OurPriceDiscount` (negative there), and `item-tax` equals `OurPriceTax` plus `OurPriceTaxDiscount`. |
+| `item-promotion-discount` | Total of all promotion discounts applied to the order item. | **Positive** here (negative in `fba_shipments`). **Net of VAT**, while `item-price` includes VAT and `item-tax` is the VAT after the promotion. So the buyer paid `item-price` minus the discount with its VAT at the row's own rate: − 1.2 × `item-promotion-discount` on a 20% row (within 1p a unit of `transactions`), − 1.05 × on a 5% row; subtracting the discount alone overstates it by the discount's VAT. Where `item-tax` is `0` or blank (no VAT, e.g. zero-rated items or exports), subtract the discount as it is. In `transactions` the discount equals `OurPriceDiscount` (negative there), and `item-tax` equals `OurPriceTax` plus `OurPriceTaxDiscount`. |
 | `ship-promotion-discount` | Promotion discount applied to delivery. | Positive (negative in `fba_shipments`): subtract it. Equals `shipping-price` on free-delivery rows. |
 | `ship-city` | Delivery city. | Personal: never copy. |
 | `ship-state` | Delivery state, region or county. | Personal: never copy. Often blank. |
@@ -83,7 +83,7 @@ The download holds the same buyer location columns (see Personal data). The Orde
 - How many units of each ASIN or SKU sold, per store, per day or week? Leave out `Cancelled` rows and the Multi-Channel Fulfilment rows (`sales-channel` `Non-Amazon` or `Non-Amazon UK`).
 - Which orders were cancelled, and how many per ASIN? Count rows: `quantity` is `0` on cancelled lines.
 - Which store does an order belong to? (Join other reports' order ids to `sales-channel`.)
-- How much did buyers pay per unit, per store, after promotions? (`item-price`, VAT included, minus 1.2 × `item-promotion-discount` on a 20% row, because the discount is net of VAT, or minus the discount alone when `item-tax` is blank; then divide by `quantity`, on rows that aren't cancelled.)
+- How much did buyers pay per unit, per store, after promotions? (`item-price`, VAT included, minus the discount with its VAT at the row's own rate, such as 1.2 × `item-promotion-discount` on a 20% row, because the discount is net of VAT, or minus the discount alone when `item-tax` is `0` or blank; then divide by `quantity`, on rows that aren't cancelled.)
 - Which promotions were applied to which order items?
 - How fast does a new product sell through after it goes live?
 

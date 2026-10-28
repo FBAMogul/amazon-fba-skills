@@ -57,7 +57,7 @@ Seen in a real UK seller's files (Oct 2026):
 - **Several rows per SKU.** A SKU can have units in two or three age tiers, or be charged in two countries, in the same month. Month, `sku`, `country` and `surcharge-age-tier` together are unique. Add up the rows per SKU, one `currency` at a time.
 - **A country code isn't always where the stock is.** A row's `country` is the store the surcharge is charged under, and that store's stock can be held in other countries' centres (see the `country_code` column in [storage_fees](storage_fees.md)). There's no centre column here, so join each row's FNSKU, month and country to `storage_fees` for the centres; where that shows more than one centre country, the surcharge can't be split between them.
 - **`No Listing` condition:** aged stock with no live offer still gets charged.
-- **Mixed units and currencies:** cubic feet and GBP for `GB` rows, cubic metres and EUR for eurozone rows such as `DE`.
+- **Mixed units and currencies:** cubic feet and GBP for `GB` rows, cubic metres and EUR for eurozone stores' rows.
 - Lines end in CRLF, but the last line of the file has no line ending at all, so `wc -l` counts one row short. The text is UTF-8.
 
 Sources: [SP-API FBA reports](https://developer-docs.amazon/sp-api/docs/report-type-values-fba) (column names) and [Aged Inventory Surcharge report](https://sellercentral.amazon.co.uk/help/hub/reference/external/G200725880) (meanings).

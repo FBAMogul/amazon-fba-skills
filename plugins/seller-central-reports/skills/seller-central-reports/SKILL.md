@@ -66,7 +66,7 @@ Whatever the position, put both sides on the same basis before joining or compar
 | Report and column | VAT |
 |---|---|
 | `orders` `item-price` | Includes VAT; `item-tax` is the VAT inside it. |
-| `orders` `item-promotion-discount` | Before VAT; `item-tax` on those rows is the VAT after the promotion, so on a 20% row the buyer paid `item-price` − 1.2 × `item-promotion-discount`. |
+| `orders` `item-promotion-discount` | Before VAT; `item-tax` on those rows is the VAT after the promotion, so the buyer paid `item-price` minus the discount with its VAT at the row's own rate (− 1.2 × `item-promotion-discount` on a 20% row; the discount alone where `item-tax` is `0` or blank). |
 | `fba_shipments` `item-price`, `fba_shipment_sales` `item-price-per-unit` | Before VAT for a seller enrolled in Amazon's VAT Calculation Service, with `fba_shipments` adding `item-tax` on top; Amazon says enrolling changes them from VAT-inclusive ([Amazon](https://developer-docs.amazon/sp-api/docs/create-and-upload-invoices)). Check which: before VAT, `item-price` + `item-tax` equals `orders`' VAT-inclusive `item-price` for an item with one row. |
 | `settlements` `Principal`, `transactions` `ProductCharges` | Before VAT, with the VAT on a separate `Tax` row or breakdown, where Amazon calculates the VAT (its VAT Calculation Service). Without that, `Principal` can include VAT with no `Tax` row ([A2X's settlement examples](https://support.a2xaccounting.com/en/articles/3431567-getting-started-with-vat-in-a2x)). If there's no `Tax` row, don't treat the price as before VAT: ask the seller and use their accounting records. |
 | `settlements` fee rows (`ItemFees`: `Commission`, `FBAPerUnitFulfillmentFee` and the rest) | Include VAT. Each equals that fee's total in `transactions`. |

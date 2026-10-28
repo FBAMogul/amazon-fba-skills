@@ -71,7 +71,7 @@ None: no buyer or business details. Some sellers put their cost price in the SKU
 
 Seen in a real UK seller's files (Oct 2026):
 
-- **UK only, and roughly the stocked SKUs.** Every row was `amazon-store` `GB`, though the request named every store. The SKUs roughly follow those with fulfillable stock in `inventory_all` the same day, but not exactly: the file can hold a SKU with none and miss a SKU that has some.
+- **Can be UK only, and roughly the stocked SKUs.** The file can hold only `GB` rows (`amazon-store`) even when the request names every store. The SKUs roughly follow those with fulfillable stock in `inventory_all` the same day, but not exactly: the file can hold a SKU with none and miss a SKU that has some.
 - **Estimated vs charged fees.** For fees actually charged, use `seller_economics`, whose fees include VAT: compare the estimate with its `amount` divided by `quantity`, not with `amountPerUnit` or `totalAmount`, which include the VAT. `amount` is before VAT and before fee promotions: the UK `FbaFulfilmentFee` `amount` per unit equalled this report's fulfilment fee on every SKU checked, including ones with a promotion. What was actually charged before VAT is `amount` minus `promotionAmount`, and a promotion can be the whole fee (`totalAmount` 0).
 - **The EFN columns don't mean cross-border cost.** The DE, FR, IT, ES and SE columns are filled and the `-uk` column is `--` on every row. Their meaning isn't documented and all five filled columns equal the domestic fee on every row, so don't use them for the cost of a cross-border order.
 - **HTML entities in SKUs:** `&pound;`, `&amp;` and `&ndash;`. Decode them before joining to other reports.

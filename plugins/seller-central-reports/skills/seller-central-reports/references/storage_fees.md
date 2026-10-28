@@ -45,7 +45,7 @@ Checked against a real UK seller's files in Oct 2026: 34 columns, in this order,
 | `est_vol_for_sus` | Not defined in Amazon's docs. | By name, the volume the surcharge applies to. |
 | `est_base_msf` | Not defined in Amazon's docs. | By name, the estimated base monthly storage fee. Can be `0`, with `est_sus`, on rows that carry a fee, so don't rebuild the fee from it. |
 | `est_sus` | Not defined in Amazon's docs. | By name, the estimated utilisation surcharge. |
-| `currency` | Currency of the storage rate amount. | `GBP` on `GB` rows, `EUR` on rows for euro countries such as `DE`. |
+| `currency` | Currency of the storage rate amount. | `GBP` on `GB` rows, `EUR` on rows for euro-country stores. |
 | `estimated_monthly_storage_fee` | Monthly storage fee that applies to this ASIN. | In `currency`. **After any incentive:** `total_incentive_fee_amount` is already taken off. Sum every row for a month's fee; the sum equals the storage billed, before VAT, in `transactions` and `settlements`. |
 | `category` | Item category used to calculate storage fees. | Text, e.g. `Others`. On the UK help page, not the SP-API list. |
 | `eligible_for_inventory_discount` | Not defined in Amazon's docs. | By name, a yes/no flag (`N` for no). |
