@@ -46,7 +46,7 @@ Checked against a real UK seller's file in Oct 2026: 32 columns, in this order. 
 | `estimated-order-handling-fee-per-order` | Estimated order handling fee per order. | Can be `--` on every row. |
 | `expected-domestic-fulfilment-fee-per-unit` | Estimated fulfilment fee from the item's dimensions and weight. | Before VAT: it usually matched `transactions`' `FBAPerUnitFulfillmentFee` > `Base` on single-unit UK sales, and never `Base` plus its `Tax`. Some sales were charged more than the estimate. |
 | `expected-efn-fulfilment-fee-per-unit-uk` | Not defined in Amazon's docs (they give the name only); by name, a European Fulfilment Network fee involving the UK. | Can be `--` on every row. |
-| `expected-efn-fulfilment-fee-per-unit-de` | Not defined in Amazon's docs; by name, the same for Germany. | Seen equal to `expected-domestic-fulfilment-fee-per-unit` on every row, even for SKUs with no German stock (`inventory_by_country`). Don't read it as a cross-border cost. |
+| `expected-efn-fulfilment-fee-per-unit-de` | Not defined in Amazon's docs; by name, the same for Germany. | Seen equal to `expected-domestic-fulfilment-fee-per-unit` on every row. Don't read it as a cross-border cost. |
 | `expected-efn-fulfilment-fee-per-unit-fr` | Not defined in Amazon's docs; by name, the same for France. | Seen equal to the domestic fee on every row, like `-de`. |
 | `expected-efn-fulfilment-fee-per-unit-it` | Not defined in Amazon's docs; by name, the same for Italy. | Seen equal to the domestic fee on every row, like `-de`. |
 | `expected-efn-fulfilment-fee-per-unit-es` | Not defined in Amazon's docs; by name, the same for Spain. | Seen equal to the domestic fee on every row, like `-de`. |

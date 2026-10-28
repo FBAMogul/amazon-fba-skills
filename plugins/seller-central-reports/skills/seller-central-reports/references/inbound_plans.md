@@ -56,7 +56,7 @@ Every `sourceAddress` field except `countryCode`: the ship-from contact name, co
 Seen in a real UK seller's API responses (Oct 2026):
 
 - **Without `status`, only `ACTIVE` plans come back.** With `status` set, Amazon honours it together with `paginationToken`, and asking for `ACTIVE`, `SHIPPED` and `VOIDED` in turn listed every plan once, each `inboundPlanId` unique. Plans in `ERRORED` status can't be listed.
-- **`ACTIVE` doesn't mean recent.** Old plans can stay `ACTIVE` long after their stock was shipped, so a plan list can hold more `ACTIVE` plans than `SHIPPED` ones. Amazon's docs don't say when a plan moves from `ACTIVE` to `SHIPPED`, so filter by `createdAt` or `lastUpdatedAt` as well as `status`, and don't read an old `ACTIVE` plan as stock that was never sent; check its shipments in Seller Central.
+- **`ACTIVE` doesn't mean recent.** Old plans can stay `ACTIVE` long after their stock was shipped. Amazon's docs don't say when a plan moves from `ACTIVE` to `SHIPPED`, so filter by `createdAt` or `lastUpdatedAt` as well as `status`, and don't read an old `ACTIVE` plan as stock that was never sent; check its shipments in Seller Central.
 - **`name` can be an empty string.**
 - **`stateOrProvinceCode` can be a county name**, not a code.
 - **The ship-from address is personal data:** a contact name, phone number, email and street address. Never copy any of it.

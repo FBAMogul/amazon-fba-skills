@@ -23,7 +23,7 @@ Checked against a real UK seller's files in Oct 2026: 34 columns, in this order,
 | `fnsku` | Amazon's fulfilment network SKU. | No SKU column; join on `fnsku`. |
 | `product_name` | Description of the ASIN on the detail page. | |
 | `fulfillment_center` | Fulfilment centre where the ASIN is stored. | **Wrapped in single quotes:** strip them. Not one row per ASIN per centre: an ASIN, or an FNSKU, can have several rows in one centre. |
-| `country_code` | Country the stock is billed under, not always the centre's country. | Two-letter code, e.g. `GB`. **`DE` covers Amazon's centres in Poland and the Czech Republic too;** there's no `PL` or `CZ` code. For the country, go by `fulfillment_center`. |
+| `country_code` | Country the stock is billed under, not always the centre's country. | Two-letter code, e.g. `GB`. **A store's code can cover centres in other countries:** under Amazon's [Central Europe Programme](https://sell.amazon.de/versand-durch-amazon/central-europe-program), Amazon.de stock can be stored in Germany, Poland or the Czech Republic. For the centre's country, go by `fulfillment_center`. |
 | `longest_side` | Longest side of one unit. | Decimal. |
 | `median_side` | Side that is neither longest nor shortest. | Decimal. |
 | `shortest_side` | Shortest side of one unit. | Decimal. |
@@ -62,7 +62,7 @@ None: no buyer or business details. Rule: strip personal data before analysis an
 
 ## Questions it answers
 
-- Which ASINs cost the most to store last month, and in which country's fulfilment centres? (Add up every row per ASIN, one currency at a time. `DE` includes Amazon's Polish and Czech centres.)
+- Which ASINs cost the most to store last month, and in which country's fulfilment centres? (Add up every row per ASIN, one currency at a time, and go by `fulfillment_center` for the centre's country.)
 - Is the storage utilisation surcharge being charged, and on which size tier (`utilization_surcharge_rate`, `storage_utilization_ratio`)?
 - Which slow sellers cost more in storage per month than they earn, so they should be removed or repriced?
 - How much did storage cost move between months, given that rates change with the time of year?
@@ -79,8 +79,7 @@ Seen in a real UK seller's files (Oct 2026):
 - **The fee is after incentives.** For each month and country checked, the sum of `estimated_monthly_storage_fee` equalled the storage `Base` billed in the next month's `transactions` exactly, and the storage `Base fee` rows in `settlements` matched too. Where an incentive applied, adding it back broke the match. Per row, fee + incentive equals the undiscounted fee, (`average_quantity_on_hand` - `average_quantity_pending_removal`) x `item_volume` x `base_rate`, to within rounding. Where the incentive covers the whole fee, the fee, `est_base_msf` and `estimated_total_item_volume` are all `0` though stock was on hand. `est_base_msf` + `est_sus` are after the incentive too, so they can't show the fee before it.
 - **Scientific notation.** Small values in the volume and fee columns (`item_volume`, `estimated_total_item_volume`, `est_vol_for_sus`, `est_base_msf`, `est_sus`, `estimated_monthly_storage_fee`, `total_incentive_fee_amount`) sometimes come in the form `4.0E-4`. Read them as numbers.
 - **Volumes mix units:** cubic feet for UK rows, cubic metres for EU rows, in the same file.
-- **Stock in euro countries is billed in euros.** Rows for `DE` and other euro countries are in `EUR`; don't add them to the `GBP` rows.
-- **Stock in Polish and Czech centres is filed under `DE`.** Amazon's Central Europe Programme stores Amazon.de stock in Germany, Poland and the Czech Republic ([Central Europe Programme](https://sell.amazon.de/versand-durch-amazon/central-europe-program)), and this report bills it under `DE`, though `inventory_by_country` can show the same stock as `PL`. Go by `fulfillment_center` for the centre's country; Amazon's jobs site lists its Czech fulfilment centre ([Amazon jobs: Czech Republic](https://www.amazon.jobs/en-gb/location/czech-republic)).
+- **Stock in euro countries is billed in euros.** Rows for euro-country stores are in `EUR`; don't add them to the `GBP` rows.
 - Lines end in CRLF, but the last line of the file has no line ending at all, so `wc -l` counts one row short and a shell `while read` loop skips that row. The text is UTF-8.
 
 Sources: [SP-API FBA reports](https://developer-docs.amazon/sp-api/docs/report-type-values-fba) (column names) and [Monthly Storage Fees report](https://sellercentral.amazon.co.uk/help/hub/reference/external/G202086720) (meanings).
