@@ -29,7 +29,7 @@ Checked against a real UK seller's files in Oct 2026: 14 columns, in this order,
 | `per-unit-volume` | Volume per unit for which the surcharge was charged. | In `volume-unit`. Small values (seen in cubic metres) can come in scientific notation, in the form `n.nE-4`: read them as numbers. |
 | `currency` | Not defined on the UK help page. | A currency code such as `GBP` or `EUR`. |
 | `volume-unit` | Unit of the volume value. | `cubic_feet` for `GB`, `cubic_meters` for EU countries. |
-| `country` | Country the surcharge is charged under, not always where the units are stored. | Two letters, such as `GB` or `DE`. **A code can cover stock held in other countries' centres** (see Traps). There's no centre column. |
+| `country` | Country the surcharge is charged under, not always where the units are stored. | Two letters, such as `GB`. **A code can cover stock held in other countries' centres** (see Traps). There's no centre column. |
 | `qty-charged` | Units the surcharge was assessed on. | Whole number. |
 | `amount-charged` | Surcharge charged for the SKU. | In `currency`, before VAT. Hyphenated, not the help page's `amount_charged`. Sum this for totals; never recompute it from `rate-surcharge`, which is rounded. |
 | `surcharge-age-tier` | Age tier charged. | A range of days, such as `241-270`. Up to January 2026 the top tier is `365+`; from February 2026 it splits into `366-455` and `456+`. |
