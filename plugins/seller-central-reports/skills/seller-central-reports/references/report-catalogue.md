@@ -134,9 +134,9 @@ Retained 30 days. Covers only orders **less than 2 years old**. All of these nee
 | reportType | Content | How | Role (any one) | Range |
 |---|---|---|---|---|
 | `GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_GENERAL` | Orders updated in the period | Req only | Amazon Fulfillment, Inventory and Order Tracking, Pricing, Product Listing, DTC Shipping (R) | **Max 30-day range. "Start date can be any date"**, but the Orders API caps at 2 years. Actual depth beyond 2 years is **unverified**. |
-| [`GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_GENERAL`](orders.md) | Orders placed in the period | Req | same | 30-day range |
-| `GET_FLAT_FILE_ARCHIVED_ORDERS_DATA_BY_ORDER_DATE` | Archived orders | Req | same | 30-day range |
-| `GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_GENERAL` / `…_BY_ORDER_DATE_GENERAL` | XML versions | Req | same | 30-day range |
+| [`GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_GENERAL`](orders.md) | Orders placed in the period | Req | Amazon Fulfillment, Inventory and Order Tracking, Pricing, DTC Shipping (R) (not Product Listing) | 30-day range |
+| `GET_FLAT_FILE_ARCHIVED_ORDERS_DATA_BY_ORDER_DATE` | Archived orders | Req | Amazon Fulfillment, Inventory and Order Tracking, Pricing, DTC Shipping (R) (not Product Listing) | 30-day range |
+| `GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_GENERAL` / `…_BY_ORDER_DATE_GENERAL` | XML versions | Req | Amazon Fulfillment, Inventory and Order Tracking, Pricing, DTC Shipping (R) (not Product Listing) | 30-day range |
 
 ### 2.4 Pending order reports [rt-order]
 
