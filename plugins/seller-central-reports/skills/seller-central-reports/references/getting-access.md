@@ -29,7 +29,7 @@ Walk the seller through it one step at a time. Never ask them to paste a key, se
 
 ## Which roles to tick
 
-Tick only what you'll use: the AUP says "Do not request access to or retrieve Information that is not necessary for your Application's functionality" (§3.8). The first six roles fetch every report page in this pack except two ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types), [roles](https://developer-docs.amazon/sp-api/docs/roles-in-the-selling-partner-api)): `vat_transactions` needs Tax Invoicing, a restricted role, plus a Restricted Data Token, so most sellers download it in Seller Central ([vat_transactions](vat_transactions.md)); and `date_range_transactions` has no API route, so download it in Seller Central ([date_range_transactions](date_range_transactions.md)).
+Tick only what you'll use: the AUP says "Do not request access to or retrieve Information that is not necessary for your Application's functionality" (§3.8). The first six roles fetch every report page in this pack except three ([role mappings](https://developer-docs.amazon/sp-api/docs/role-mappings-for-types), [roles](https://developer-docs.amazon/sp-api/docs/roles-in-the-selling-partner-api)): `vat_transactions` needs Tax Invoicing, a restricted role, plus a Restricted Data Token, so most sellers download it in Seller Central ([vat_transactions](vat_transactions.md)); `date_range_transactions` has no API route, so download it in Seller Central ([date_range_transactions](date_range_transactions.md)); and `ads_reports` comes from the Amazon Ads API, a separate API with its own sign-up, not an SP-API role ([ads_reports](ads_reports.md)).
 
 | Role | What it gets in this pack |
 |---|---|

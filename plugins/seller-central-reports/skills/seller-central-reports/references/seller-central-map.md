@@ -27,7 +27,7 @@ This is written for a UK FBA seller's account under the Amazon Services Europe a
    - capacity limits and Capacity Manager
    - the IPI score
    - Voice of the Customer (NCX rate, CX Health and the comments)
-   - claim-level detail for A-to-z claims, chargebacks and SAFE-T claims
+   - claim-level detail for A-to-z claims, chargebacks and SAFE-T claims (beyond a SAFE-T claim's id and state)
    - Amazon Lending offers and loan terms
    - Seller fee VAT invoices in the Tax Document Library
    - User permissions and notification settings
@@ -35,7 +35,7 @@ This is written for a UK FBA seller's account under the Amazon Services Europe a
    - Brand-only tools (experiments, Vine, the brand dashboard), which mostly don't apply to a reseller who isn't the brand owner
 4. **History limits matter for a 12-month pull.**
    - The Reports API keeps a generated report for at most 90 days [GETREPORTS]. Settlement reports are created by Amazon and can't be requested [RTV-SET], so in practice settlement reports older than about 90 days won't come through the API **[inference]**. Rebuild that history from the Finances API (180-day windows [TXN]) or from Date Range reports in the UI, which go back to 2012 [H-DRR].
-   - Ads history depends on the report type. The older ones (the Ads console's Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026, and Ads API v3) keep only about 60–95 days **[third-party]** [ADS-RET]. Unified reporting in the Ads console (Measurement and Reporting > Reporting), generally available since 8 Jun 2026 with the UK included, keeps up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data [ADS-UNIFIED]. Through the Ads API, the v1 Reporting API, generally available since 30 Sep 2026 [ADS-API-RELEASES], keeps 24 months of daily data and 6 years of monthly ([report-catalogue](report-catalogue.md) §7).
+   - Ads history depends on the report type. The Ads console's older Sponsored Ads reports each have their own look-back: purchased product 60 days, search term 65, advertised product, targeting, placement and Performance Over Time 90, gross and invalid traffic 365 days, budget 2 years and the Sponsored Products campaign report 5 years (30 days by hour) [ADS-SP-PP] [ADS-SP-CAMPAIGN] ([ads_reports](ads_reports.md) links Amazon's page for each). From 17 Dec 2026 no new reports can be created or edited on those pages, and on 31 Dec 2026 Amazon shuts them and everything still on them is "permanently deleted" [ADS-MIGRATE]. Ads API v3 keeps 60–95 days for most reports, and 731 days for the Sponsored Brands purchased product report ([report-catalogue](report-catalogue.md) §7). Unified reporting in the Ads console (Measurement and Reporting > Reporting), generally available since 8 Jun 2026 with the UK included [ADS-UNIFIED], keeps 24 months of daily or weekly data and 6 years (72 months) of monthly, yearly or summary data; one report can cover at most 120 days by day, 15 months by week or 25 months by month [ADS-DATA] [ADS-UR] [ADS-UR-CREATE]. Amazon raised daily and weekly history from 15 to 24 months on 26 Aug 2026; the 8 Jun 2026 announcement still says 15. The longest range one report can cover didn't change [ADS-API-RELEASES]. Through the Ads API, the v1 Reporting API, generally available since 30 Sep 2026 [ADS-API-RELEASES], keeps 24 months of daily data and 6 years of monthly ([report-catalogue](report-catalogue.md) §7).
    - The detailed inventory ledger covers 18 months [H-LEDGER].
    - Business Reports cover about 2 years [H-BR].
 5. **Browser automation rules differ by marketplace.**
@@ -159,7 +159,7 @@ The tables are grouped roughly by the classic menu's headings. A path in bracket
 
 | Screen | API route | Sources |
 |---|---|---|
-| Campaign Manager (Marketing > Ads console) and Sponsored Products/Brands/Display reports | **Yes**: Amazon Ads API (campaign management and reporting) | [ADS] [ADS-ABOUT] |
+| Campaign Manager (Marketing > Ads console) and Sponsored Products/Brands/Display reports | **Yes**: Amazon Ads API (campaign management and reporting); pack page [ads_reports](ads_reports.md) | [ADS] [ADS-ABOUT] |
 | Stores (brand owners; Site map > Marketing > Manage stores) | **Yes, per third-party sources**: Ads API `/v2/stores` and store insights | [STORES-API] |
 
 ### 1.5 Promotions, coupons, deals, Vine
@@ -198,7 +198,7 @@ The live classic menu has these under **Advertising**, not Growth; the new menu 
 | Disbursements / Disbursement tracker (Finance > Finance reports, Disbursements tab) | Payouts and their status | — | **Yes**: Transfers API `listPayouts` and `listExpectedPayouts` (NA/EU/FE). `initiatePayout` is listed for "EU", and UK coverage is **[unverified]** | [H-DISB] [TRANSFERS] |
 | Account level reserve | Reserve amount | — | **Yes**: `listBalances` ACCOUNT_LEVEL_RESERVE | [H-ALR] [BAL] |
 | Reimbursements | FBA reimbursements, with case IDs | Download, in Supply chain reports | **Yes**: [`GET_FBA_REIMBURSEMENTS_DATA`](reimbursements.md) | [H-PAYREP] [H-REIMB] [RTV-FBA] |
-| Advertising reports | Ads console reports | Download. The classic menu's Advertising Reports opens the Ads console, and the Tax Document Library says advertising tax documents are now there too | **Yes**: Ads API reporting | [ADS] |
+| Advertising reports | Ads console reports | Download. The classic menu's Advertising Reports opens the Ads console, and the Tax Document Library says advertising tax documents are now there too | **Yes**: Ads API reporting ([ads_reports](ads_reports.md)) | [ADS] |
 | Tax Document Library (Finance > Finance reports > Tax document library) and Supply chain reports: VAT Calculation report, AVTR, VAT invoice data | VAT data | Yes. The Amazon VAT Transactions Report (AVTR) sits in Supply chain reports, and some accounts see a banner in the Tax Document Library that links to it: csv or txt, one month at a time; last month's report is ready "on or after the third day" of the current month. Amazon's note says it now includes fee data (filter `SALES_CHANNEL` for `AMAZON_FEE` and use `ACTIVITY_PERIOD`). The AVTR file: [vat_transactions](vat_transactions.md) | **Yes**: `SC_VAT_TAX_REPORT` (request only), `GET_VAT_TRANSACTION_DATA` (from the 3rd of each month), `GET_FLAT_FILE_VAT_INVOICE_DATA_REPORT`. Needs a Restricted Data Token | [RTV-TAX] [RTV-INVOICE] |
 | Tax Document Library: Amazon VAT invoices (PDF) and seller fee invoices and credit notes | Invoice PDFs; seller fee invoices also as CSV | Yes (7-day request windows for VAT invoices). Seller fee invoices now also come as a transaction-level CSV (transaction ID, order ID, fee type, total fees); the PDFs are unchanged. The page shows the 1,000 most recent invoices, with Load More for older ones ([seller-central-downloads](seller-central-downloads.md)) | **No API route found** for the PDFs or for seller fee invoices | [H-VATINV] [3P-TDL] |
 | Selling economics and fees: SKU Economics report (Finance > Profit analytics > Selling economics, `/sereport`) | Sales, units, fees, ad spend, off-Amazon costs and net proceeds per MSKU or another level, for the stores and dates you pick | Generate report, then a CSV; download links stay active for 30 days | **Yes, in a different shape**: Data Kiosk [seller_economics](seller_economics.md) holds the same kind of data as JSON, with different field names | Live check |
@@ -254,7 +254,7 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 4. **Ungating application status and history.** The API shows the current restriction only. [LR] [H-APPROVAL]
 5. **FBA capacity limits and Capacity Manager.** [H-CAP] [H-CAPMGR]
 6. **IPI score.** [H-IPI]
-7. **A-to-z, chargeback and SAFE-T claim detail and responses.** The API gives counts and money only. [RTV-PERF] [FIN-V0]
+7. **A-to-z, chargeback and SAFE-T claim detail and responses.** The API gives counts and money, and for seller-fulfilled returns the SAFE-T claim id and state ([fbm_returns](fbm_returns.md)); not the full claim, filing or responses. [RTV-PERF] [FIN-V0]
 8. **Settlement history older than about 90 days through the Reports API.** It's a retention limit rather than a missing route: rebuild it through Finances [`listTransactions`](transactions.md) or download it from the UI. [GETREPORTS] [RTV-SET] [TXN]
 
 ### Medium
@@ -264,7 +264,7 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 12. **Amazon Lending** offers, terms and balance. [FIN-V0]
 13. **Automate Pricing** rules' settings and their history. Rule names and each SKU's rule do come through the API. [H-AUTOPRICE] [AUTOPRICE-API]
 14. **Capacity Manager** reservation-fee history (UI download only). [H-CAPMGR]
-15. **Ads history older than about 60–95 days in the older report types.** It's a retention limit rather than a missing route: the Ads console's Sponsored Ads reports and Ads API v3 keep only that long **[third-party]**, so take longer history from unified reporting in the Ads console (up to 15 months of daily or weekly data, 6 years of monthly) or the Ads API's v1 Reporting API, generally available since 30 Sep 2026 ([report-catalogue](report-catalogue.md) §7). [ADS-RET] [ADS-UNIFIED]
+15. **Ads history beyond the older report types' look-back.** It's a retention limit rather than a missing route: most of the Ads console's Sponsored Ads reports keep 60 to 90 days (gross and invalid traffic 365 days, the budget report 2 years and the Sponsored Products campaign report 5 years), no new ones can be created from 17 Dec 2026, and all of them are deleted after 31 Dec 2026; Ads API v3 keeps 60–95 days for most reports (731 for Sponsored Brands purchased product). So take longer history from unified reporting in the Ads console (24 months of daily or weekly data, 6 years of monthly) or the Ads API's v1 Reporting API, generally available since 30 Sep 2026 ([report-catalogue](report-catalogue.md) §7; [ads_reports](ads_reports.md)). [ADS-SP-PP] [ADS-SP-CAMPAIGN] [ADS-MIGRATE] [ADS-DATA] [ADS-API-RELEASES]
 16. **Date Range summary PDF.** The underlying data is in the Finances API. [H-DRR]
 
 ### Low (or brand-owner only)
@@ -305,12 +305,12 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 | Orders | All Orders covers the past 2 years, 30 days per download. Older orders only through Archived Order Reports (monthly, no PII) | 30-day request window; generated reports kept 30 days | [H-ARCHORD] [RTV-ORD] |
 | Feedback | Report range up to 1 year; generated files kept 30 days | Not stated | [H-FEEDBACK] |
 | Coupons | Expired or cancelled coupons from the last 18 months moved to the new dashboard | — | [H-COUPON] |
-| Ads console reports | Unified reporting (Measurement and Reporting > Reporting; generally available 8 Jun 2026, UK included): up to 15 months of daily or weekly data and up to 6 years of monthly, yearly or summary data. The older Sponsored Ads reports, which Amazon is retiring by 31 Dec 2026: about 60–90 days depending on report **[third-party]** | Ads API v1 Reporting API (generally available since 30 Sep 2026): daily data 24 months, monthly and yearly 6 years. Ads API v3: Sponsored Products 95 days, Sponsored Brands 60, Sponsored Display 65 ([report-catalogue](report-catalogue.md) §7) | [ADS-UNIFIED] [ADS-RET] |
+| Ads console reports | Unified reporting (Measurement and Reporting > Reporting; generally available 8 Jun 2026, UK included): 24 months of daily or weekly data and 6 years (72 months) of monthly, yearly or summary data; one report covers at most 120 days by day, 15 months by week or 25 months by month. The older Sponsored Ads reports (no new ones from 17 Dec 2026; deleted with their history after 31 Dec 2026): 60 days to 5 years depending on report (purchased product 60 days, search term 65, most others 90, gross and invalid traffic 365 days, budget 2 years, Sponsored Products campaign 5 years; [ads_reports](ads_reports.md) has each) | Ads API v1 Reporting API (generally available since 30 Sep 2026): daily data 24 months, monthly and yearly 6 years. Ads API v3: Sponsored Products 95 days, Sponsored Brands 60 (purchased product 731), Sponsored Display 65 ([report-catalogue](report-catalogue.md) §7) | [ADS-UNIFIED] [ADS-DATA] [ADS-UR-CREATE] [ADS-SP-PP] [ADS-SP-CAMPAIGN] [ADS-MIGRATE] |
 | Brand Analytics SQP | — | Monthly: up to 17 months | [RTV-AN] |
 | Account health defect snapshots | — | Data Kiosk: 24 months at monthly granularity; returns lag about 45 days | [SA-DK] |
 | Regulatory compliance tab | 6-month view windows | — | [H-REGCOMP] |
 
-**For 12 months:** everything except old settlement files is reachable. For ads, use unified reporting in the Ads console or the Ads API's v1 Reporting API (generally available since 30 Sep 2026), not the older report types, which keep only about 60–95 days. Take settlement data older than 90 days from the UI (All statements → Request Report, or Date Range reports) or rebuild it from the Finances API.
+**For 12 months:** everything except old settlement files is reachable. For ads, use unified reporting in the Ads console or the Ads API's v1 Reporting API (generally available since 30 Sep 2026), not the older report types: most keep only 60 to 95 days, and the console's Sponsored Ads reports can't be created from 17 Dec 2026 and are deleted after 31 Dec 2026. Take settlement data older than 90 days from the UI (All statements → Request Report, or Date Range reports) or rebuild it from the Finances API.
 
 ---
 
@@ -454,6 +454,12 @@ They point instead to "Authorized Partners".
 - [ADS] https://advertising.amazon.com/API
 - [ADS-ABOUT] https://advertising.amazon.com/about-api
 - [ADS-UNIFIED] https://advertising.amazon.com/resources/whats-new/streamline-campaign-analysis-with-unified-reporting (8 Jun 2026)
+- [ADS-DATA] https://advertising.amazon.com/help/G8A5Z6UD9ME5W3GZ (Data availability in unified reporting)
+- [ADS-UR] https://advertising.amazon.com/help/GMH8A8AJSH4ATV6T (Understand unified reporting)
+- [ADS-UR-CREATE] https://advertising.amazon.com/help/GK3FG568T93VE2VL (Create a report in unified reporting)
+- [ADS-MIGRATE] https://advertising.amazon.com/help/GK3JZZE5QLTF8U8A (Migrate your scheduled reports)
+- [ADS-SP-PP] https://advertising.amazon.com/help/G9JR57B7AEWBQ3P2 (Sponsored Products purchased product report)
+- [ADS-SP-CAMPAIGN] https://advertising.amazon.com/help/G4KJE82E7LDKAHZX (Sponsored Products campaign report)
 
 **Amazon agreements and policies**
 - [AUP] https://sellercentral.amazon.com/solution-provider/policy?policyType=AUP&locale=en_US
@@ -535,7 +541,6 @@ They point instead to "Authorized Partners".
 - [FORUM-CAP] https://sellercentral.amazon.com/seller-forums/discussions/t/3c9cef3c-530b-4846-a3b3-a855ed62f241
 
 **Third-party (secondary)**
-- [ADS-RET] https://www.intentwise.com/blog/explained-how-long-does-amazon-keep-your-ad-reports
 - [STORES-API] https://ppc.land/amazon-brand-stores-api-exits-beta-what-brands-can-now-automate/
 - [3P-VOC] https://www.sellerlabs.com/blog/amazon-voice-of-the-customer-transition-2026/
 - [3P-TDL] https://linkmybooks.com/blog/amazon-seller-tax-documents

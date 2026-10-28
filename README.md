@@ -51,7 +51,7 @@ To copy a skill by hand instead, see its own README.
 
 | Skill | What Claude learns | Install |
 |---|---|---|
-| [seller-central-reports](plugins/seller-central-reports/) | Every Seller Central report a UK FBA seller can download or pull through Amazon's API: where it is in the new and classic Seller Central, what every column means, how a Seller Central download differs from the API file, which reports hold buyer details, and the traps seen in real files. Also how to get your own private API access and keep the keys safe. | `claude plugin install seller-central-reports@fbamogul` |
+| [seller-central-reports](plugins/seller-central-reports/) | Every Seller Central report a UK FBA seller can download or pull through Amazon's API: where it is in the new and classic Seller Central, what every column means, how a Seller Central download differs from the API file, which reports hold buyer details, and the traps seen in real files. Also the Sponsored Products ads reports from the Ads console and Amazon Ads API, and how to get your own private API access and keep the keys safe. | `claude plugin install seller-central-reports@fbamogul` |
 
 ## Try asking
 
