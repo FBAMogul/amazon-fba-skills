@@ -45,7 +45,7 @@ Roles are "need at least one of". "(R)" marks a restricted role. The role lists 
 | **Orders v2026-01-01** (`searchOrders`, `getOrder`) | All orders created or updated in a window, with items. `includedData` adds `BUYER`, `RECIPIENT`, `PROCEEDS`, `EXPENSE`, `PROMOTION`, `CANCELLATION`, `FULFILLMENT`, `PACKAGES`, `TAX`, `PAYMENT`, `FULFILLMENT_ORDERS`. | Any of: Amazon Fulfillment, Buyer Communication, Buyer Solicitation, Finance and Accounting, Inventory and Order Tracking, Pricing, Product Listing, Selling Partner Insights, or one of the restricted roles Direct to Consumer Shipping, Professional Services, Tax Invoicing or Tax Remittance (not Selling Partner Support). PII fields need restricted roles (§5). | Orders older than 2 years aren't returned. The new version needs no RDT for PII. | [orders] [orders-model] [orders-mig] [rmap] |
 | Orders v0 (legacy) | Same data, spread across 6 operations (`getOrders`, `getOrderItems`, `getOrderBuyerInfo`, `getOrderAddress` …). | As above | **Deprecated 28 Jan 2026; removed 27 Mar 2027** | [deprec] |
 | **Reports v2021-06-30** | All report types in §2 (request, schedule, list, download). | Depends on report type (§2) | Reports are retained for 90 days max | [reports-model] [rtypes] |
-| **Data Kiosk v2023-11-15** | GraphQL datasets: Seller Analytics, Sales & Traffic, Seller Economics (§3). | Brand Analytics (to call the API). Field-level role checks also apply. | All regions. No server-side scheduling. | [dk] [rmap] |
+| **Data Kiosk v2023-11-15** | GraphQL datasets: Seller Analytics, Sales & Traffic, Seller Economics (§3). | Brand Analytics (to call the API); the Economics dataset also needs Selling Partner Insights. Field-level role checks also apply. | All regions. No server-side scheduling. | [dk] [rmap] |
 | **Finances v2024-06-19** ([`listTransactions`](transactions.md), `listBalances`, `listSummary`) | Every posted transaction (deferred, released), balances (current or as of a past date), and financial summaries by period or settlement ID. | Finance and Accounting | `listBalances` and `listSummary` added in 2026. A request window over 180 days returns an empty response. The last 48 hours may be missing. | [fin] [fin-model] [relnotes] |
 | Finances v0 (legacy) | Financial event groups (≈ settlements), events by group, by order, or by date. | Finance and Accounting (EU). AISP is also listed. | **Deprecated 21 Jul 2025; removed 27 Aug 2027**. `listFinancialEventsByGroupId` returns only the past 2 years. | [deprec] [finv0-model] |
 | **Transfers v2024-06-01** | Payment methods, payouts (`listPayouts`), and expected payouts (`listExpectedPayouts`). Also initiates payouts. | `getPaymentMethods`: AISP, Finance and Accounting or PISP. `listPayouts` / `listExpectedPayouts`: Finance and Accounting. | `getPaymentMethods` is EU region only | [transfers] [rmap] [relnotes] |
@@ -268,7 +268,7 @@ How Data Kiosk works:
 - **One query at a time per dataset:** only one query can be running per query / selling partner / application, and a new query fails while one is pending **[dk]**.
 - **No scheduling or backlog:** Data Kiosk doesn't support query scheduling or query backlogging. Amazon's guide shows how to build your own scheduler **[dk] [dk-sched]**.
 - **Rate limits:** the same as the Reports API **[dk-wf]**.
-- **Role:** calling the API needs **Brand Analytics**, and roles are also checked per field **[dk]**.
+- **Role:** calling the API needs **Brand Analytics**, and roles are also checked per field **[dk]**. The Economics dataset also needs **Selling Partner Insights** **[dk-roles]**.
 - **Result retention:** most fields carry `@resultRetention(duration: "P30D")`, so result documents are kept 30 days **[dk-econ] [dk-st]**.
 
 | Dataset | What's in it | History | Notes |
@@ -379,7 +379,7 @@ This table covers the Orders API only. The Amazon Fulfilled Shipments report ([f
 **Roles to request for a read-everything private app** (built from §1–§4):
 
 - **Non-restricted:**
-  - Selling Partner Insights: performance reports, account status, page views.
+  - Selling Partner Insights: performance reports, account status, page views, the Data Kiosk Economics dataset (with Brand Analytics).
   - Finance and Accounting: finances, settlements, payouts, Sellers [`getAccount`](account.md), referral fee preview.
   - Amazon Fulfillment: FBA reports, inventory, inbound, MCF.
   - Inventory and Order Tracking: order reports, Sales API, listings.
@@ -558,6 +558,7 @@ SP-API docs base: `https://developer-docs.amazon/sp-api/docs/` (the old `develop
 - [dk-wf] https://developer-docs.amazon/sp-api/docs/data-kiosk-workflow-guide
 - [dk-schemas] https://github.com/amzn/selling-partner-api-models/tree/main/schemas/data-kiosk
 - [dk-econ] https://github.com/amzn/selling-partner-api-models/blob/main/schemas/data-kiosk/analytics_economics_2024_03_15.graphql
+- [dk-roles] https://developer-docs.amazon/sp-api/changelog/correction-data-kiosk-role-requirements
 - [dk-st] https://github.com/amzn/selling-partner-api-models/blob/main/schemas/data-kiosk/analytics_salesAndTraffic_2024_04_24.graphql
 - [notif] https://developer-docs.amazon/sp-api/docs/notification-type-values
 - [rdt] https://developer-docs.amazon/sp-api/docs/authorization-with-the-restricted-data-token

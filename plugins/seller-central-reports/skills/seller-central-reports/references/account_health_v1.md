@@ -17,7 +17,7 @@ Not confirmed: no single screen matches this report. Amazon's report page says o
 
 Checked against a real UK seller's file (Oct 2026): every element path, with each element's zero and non-zero values in every block. Paths below are under `sellerPerformanceReports/sellerPerformanceReport/`, one such block per store asked for. No element has attributes.
 
-**No block says which store it is.** The file never names a marketplace. A block can sometimes be matched to its store through [`account_health`](account_health.md), which is labelled by store: a store can show `None` for valid tracking there, and a block with the same status is likely that store's. In the real file, the first block was the UK's; blocks for stores with no activity were identical, so they can't be told apart; and the blocks weren't in the order the marketplace ids were sent in.
+**No block says which store it is.** The file never names a marketplace. A block can sometimes be matched to its store through [`account_health`](account_health.md), which is labelled by store: a store can show `None` for valid tracking there, and a block with the same status is likely that store's. In the real file, blocks for stores with no activity were identical, so they can't be told apart, and the blocks weren't in the order the marketplace ids were sent in, so don't assume which store the first block is.
 
 Formats: rates are text with one decimal place and a percent sign (`N.N%`), not numbers. Statuses are `Good`, `Bad` or `None` (capitalised, unlike the JSON report's `GOOD`). Times are `YYYY-MM-DDTHH:MMZ`, without seconds. The file opens with a long XML comment listing Amazon's targets (order defect rate under 1%, pre-fulfilment cancel rate under 2.5%, late shipment rate under 4%, valid tracking over 95%).
 
@@ -73,7 +73,7 @@ None. No buyer or business personal details.
 
 Seen in a real UK seller's file (Oct 2026):
 
-- **Blocks aren't labelled by store.** The first was the UK's. Others can be matched through `account_health`'s statuses, such as a store that shows `None` for valid tracking. Blocks for stores with no activity were identical, and the blocks weren't in the order the marketplace ids were sent in.
+- **Blocks aren't labelled by store,** and the first isn't always the store you'd expect. Blocks can sometimes be matched through `account_health`'s statuses, such as a store that shows `None` for valid tracking. Blocks for stores with no activity were identical, and the blocks weren't in the order the marketplace ids were sent in.
 - **Contact response time can be all zeros.** No other report here has it, but `averageResponseTimeInHours` and the three response counts can be `0` in every block, even an active store's: not measured, or no messages in the 90 days. Don't report it as a reply time.
 - **Returns and customer service dissatisfaction can be all zeros too:** `returnOrderCount` and the dissatisfaction counts can be `0` in every block and period, so the rates built on them mean nothing.
 - **The order counts are seller-fulfilled orders only.** For the same days they equal `account_health`'s `orderDefectRate.mfn.orderCount` and its `lateShipmentRate.orderCount`. For FBA order volume use [`orders`](orders.md). `account_health`'s `orderDefectRate.afn.orderCount` is Amazon's own 60-day FBA count and doesn't tie exactly to `orders` for the same days, whichever time zone you use. Its `invoiceDefectRate.orderCount` counts FBA orders too, but only business ones.

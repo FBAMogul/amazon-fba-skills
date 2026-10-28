@@ -36,9 +36,9 @@ Tick only what you'll use: the AUP says "Do not request access to or retrieve In
 | Inventory and Order Tracking | `orders`, `fba_shipments`, `fbm_returns`, `listings_all`, `pan_eu_status` |
 | Amazon Fulfillment | FBA stock, ledger, reimbursements, returns, removals, storage fees, fee preview, inbound plans, inbound problems (`inbound_noncompliance`), `fba_shipment_sales`; also `orders`, `fba_shipments`, `seller_feedback`, `pan_eu_status` |
 | Finance and Accounting | `transactions`, `settlements`, `account` |
-| Selling Partner Insights | `account_health`, `account_health_v1`, `seller_feedback`, `store_list` |
+| Selling Partner Insights | `account_health`, `account_health_v1`, `seller_feedback`, `store_list`; also `seller_economics`, with Brand Analytics |
 | Product Listing | `listings_all`, `suppressed_listings`, `pan_eu_status`, `store_list`; also gating checks (Listings Restrictions) |
-| Brand Analytics | `sales_and_traffic` and every Data Kiosk query (`seller_economics`, `seller_analytics`, `seller_analytics_asin`) |
+| Brand Analytics | `sales_and_traffic` and every Data Kiosk query (`seller_economics`, which also needs Selling Partner Insights, `seller_analytics`, `seller_analytics_asin`) |
 | Pricing (optional) | Live offers and Buy Box prices. No report in this pack needs it. |
 
 - **Brand Analytics:** Amazon's roles page doesn't say it needs Brand Registry, but whether every reseller is granted it isn't confirmed. The Brand Analytics search-term reports still need Brand Registry.
@@ -93,7 +93,7 @@ Breaking the AUP or DPP "may result in suspension or termination of Amazon Servi
 | Error | Cause and fix |
 |---|---|
 | 403 "Unauthorized" | The role wasn't approved, or was added without self-authorising again; wrong region (UK must use `sellingpartnerapi-eu`, not `-na`); expired or rotated client secret; the seller account is deactivated; an old API version Amazon has removed ([Amazon](https://developer-docs.amazon/sp-api/docs/resolve-common-http-and-authorization-error-codes)). |
-| 403 on Data Kiosk | Every Data Kiosk call needs the Brand Analytics role ([Amazon staff reply](https://github.com/amzn/selling-partner-api-models/issues/5325)). |
+| 403 on Data Kiosk | Every Data Kiosk call needs the Brand Analytics role ([Amazon staff reply](https://github.com/amzn/selling-partner-api-models/issues/5325)). Seller Economics queries also need Selling Partner Insights ([Amazon](https://developer-docs.amazon/sp-api/changelog/correction-data-kiosk-role-requirements)). |
 | "Marketplace not valid for region" | A marketplace ID from another region on the EU endpoint. Use `A1F83G8C2ARO7P` for the UK ([GitHub](https://github.com/amzn/selling-partner-api-models/issues/5126)). |
 | CONSENT_LIMIT_REACHED | All 10 self-authorisations are used ([Amazon](https://developer-docs.amazon/sp-api/docs/application-authorization-limits)). |
 | SPDC8143 | Signed in as a secondary user. Sign in as the primary user. |

@@ -142,7 +142,7 @@ The tables are grouped roughly by the classic menu's headings. A path in bracket
 |---|---|---|---|---|
 | Manage Pricing / Pricing Health (Products > Manage pricing) | Prices, Featured Offer eligibility warnings | — | **Yes**: Product Pricing API; `PRICING_HEALTH` and `ANY_OFFER_CHANGED` notifications | [MODELS] [NOTIF] |
 | Fee Preview | Estimated selling and FBA fees per SKU ("may be up to 72 hours old") | csv/txt, in Supply chain reports | **Yes**: [`GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA`](fba_fee_preview.md); Product Fees API; `GET_REFERRAL_FEE_PREVIEW_REPORT` | [H-FEEPREV] [RTV-FBA] [RTV-INV] |
-| Automate Pricing (Site map > Products > Automate pricing) | Your repricing rules and their price history | — | **No API route found** for the rules. You can still change prices through the Listings or Feeds APIs | [H-AUTOPRICE] [MODELS] |
+| Automate Pricing (Site map > Products > Automate pricing) | Your repricing rules and their price history | — | **Partial**: the rule names and ids (Product Type Definitions `getDefinitionsProductType`) and each SKU's rule and price limits (Listings Items `getListingsItem`), as [not-in-the-api](not-in-the-api.md) explains. **No API route found** for the rules' settings or what they did. You can still change prices through the Listings or Feeds APIs | [H-AUTOPRICE] [AUTOPRICE-API] [MODELS] |
 
 ### 1.3 Orders
 
@@ -262,7 +262,7 @@ The pack's [not-in-the-api](not-in-the-api.md) page lists the screen-only pages 
 10. **Account-health regulatory compliance tab.** Uploads and the Archived tab. [H-REGCOMP]
 11. **Seller fee VAT invoices and Amazon VAT invoice PDFs** in the Tax Document Library. Seller fee invoices now also come as a transaction-level CSV there. [H-VATINV] [3P-TDL]
 12. **Amazon Lending** offers, terms and balance. [FIN-V0]
-13. **Automate Pricing** rules and their history. [H-AUTOPRICE]
+13. **Automate Pricing** rules' settings and their history. Rule names and each SKU's rule do come through the API. [H-AUTOPRICE] [AUTOPRICE-API]
 14. **Capacity Manager** reservation-fee history (UI download only). [H-CAPMGR]
 15. **Ads history older than about 60–95 days in the older report types.** It's a retention limit rather than a missing route: the Ads console's Sponsored Ads reports and Ads API v3 keep only that long **[third-party]**, so take longer history from unified reporting in the Ads console (up to 15 months of daily or weekly data, 6 years of monthly) or the Ads API's v1 Reporting API, generally available since 30 Sep 2026 ([report-catalogue](report-catalogue.md) §7). [ADS-RET] [ADS-UNIFIED]
 16. **Date Range summary PDF.** The underlying data is in the Finances API. [H-DRR]
@@ -416,6 +416,7 @@ They point instead to "Authorized Partners".
 
 **Amazon SP-API docs** (developer-docs.amazon.com redirects to developer-docs.amazon)
 - [MODELS] https://developer-docs.amazon/sp-api/docs/sp-api-models
+- [AUTOPRICE-API] https://developer-docs.amazon/sp-api/docs/manage-automated-pricing-rules
 - [RN] https://developer-docs.amazon/sp-api/docs/sp-api-release-notes
 - [DEPR] https://developer-docs.amazon/sp-api/docs/sp-api-deprecations
 - [RTV] https://developer-docs.amazon/sp-api/docs/report-type-values
