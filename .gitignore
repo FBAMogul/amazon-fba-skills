@@ -1,0 +1,17 @@
+# Worktrees
+.claude/worktrees/
+
+# Mac
+.DS_Store
+
+# Keys
+.env
+.env.*
+
+# Report files: never commit real Amazon data
+*.csv
+*.tsv
+*.txt
+*.xlsx
+*.xls
+*.zip
