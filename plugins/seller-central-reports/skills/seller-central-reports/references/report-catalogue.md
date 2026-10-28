@@ -42,7 +42,7 @@ Roles are "need at least one of". "(R)" marks a restricted role. The role lists 
 
 | API (current version) | What a seller can READ | Role(s) needed | UK / notes | Source |
 |---|---|---|---|---|
-| **Orders v2026-01-01** (`searchOrders`, `getOrder`) | All orders created or updated in a window, with items. `includedData` adds `BUYER`, `RECIPIENT`, `PROCEEDS`, `EXPENSE`, `PROMOTION`, `CANCELLATION`, `FULFILLMENT`, `PACKAGES`, `TAX`, `PAYMENT`, `FULFILLMENT_ORDERS`. | Any of: Amazon Fulfillment, Buyer Communication, Buyer Solicitation, Finance and Accounting, Inventory and Order Tracking, Pricing, Product Listing, Selling Partner Insights, or a restricted role. PII fields need restricted roles (§5). | Orders older than 2 years aren't returned. The new version needs no RDT for PII. | [orders] [orders-model] [orders-mig] [rmap] |
+| **Orders v2026-01-01** (`searchOrders`, `getOrder`) | All orders created or updated in a window, with items. `includedData` adds `BUYER`, `RECIPIENT`, `PROCEEDS`, `EXPENSE`, `PROMOTION`, `CANCELLATION`, `FULFILLMENT`, `PACKAGES`, `TAX`, `PAYMENT`, `FULFILLMENT_ORDERS`. | Any of: Amazon Fulfillment, Buyer Communication, Buyer Solicitation, Finance and Accounting, Inventory and Order Tracking, Pricing, Product Listing, Selling Partner Insights, or one of the restricted roles Direct to Consumer Shipping, Professional Services, Tax Invoicing or Tax Remittance (not Selling Partner Support). PII fields need restricted roles (§5). | Orders older than 2 years aren't returned. The new version needs no RDT for PII. | [orders] [orders-model] [orders-mig] [rmap] |
 | Orders v0 (legacy) | Same data, spread across 6 operations (`getOrders`, `getOrderItems`, `getOrderBuyerInfo`, `getOrderAddress` …). | As above | **Deprecated 28 Jan 2026; removed 27 Mar 2027** | [deprec] |
 | **Reports v2021-06-30** | All report types in §2 (request, schedule, list, download). | Depends on report type (§2) | Reports are retained for 90 days max | [reports-model] [rtypes] |
 | **Data Kiosk v2023-11-15** | GraphQL datasets: Seller Analytics, Sales & Traffic, Seller Economics (§3). | Brand Analytics (to call the API). Field-level role checks also apply. | All regions. No server-side scheduling. | [dk] [rmap] |
@@ -60,7 +60,7 @@ Roles are "need at least one of". "(R)" marks a restricted role. The role lists 
 | **Listings Restrictions v2021-08-01** | Whether you're restricted or gated from listing an ASIN, with the reason and approval links. | Product Listing | Useful for ungating checks | [restrictions] [rmap] |
 | **Catalog Items v2022-04-01** | Catalogue data for any ASIN (attributes, images, ranks, relationships). | Product Listing | v0 operations are removed | [catalog] [deprec] |
 | **Product Pricing v2022-05-01 + v0** | Competitive summary, Featured Offer Expected Price (up to 40 SKUs), top offers (`getItemOffers`), your pricing. | Pricing (v2022). Pricing or Product Listing (v0). | Live market data only; no price history | [pricing] [rmap] |
-| **Product Fees v0** | Fee estimates per SKU or ASIN, or in batches of up to 20. | Many non-restricted roles (e.g. Pricing, Product Listing) | — | [fees] [rmap] |
+| **Product Fees v0** | Fee estimates per SKU or ASIN, or in batches of up to 20. | Per SKU or ASIN (`getMyFeesEstimateForSKU`, `getMyFeesEstimateForASIN`): any of Amazon Fulfillment, Buyer Communication, Buyer Solicitation, Finance and Accounting, Inventory and Order Tracking, Pricing, Product Listing, Selling Partner Insights, or the restricted Direct to Consumer Shipping, Professional Services, Tax Invoicing or Tax Remittance. Batch (`getMyFeesEstimates`): Pricing or Product Listing only | — | [fees] [rmap] |
 | **Product Type Definitions v2020-09-01** | Listing attribute schemas. Also exposes your available Automate Pricing rules. | Inventory and Order Tracking or Product Listing | — | [ptd] [autoprice] |
 | **Promotions 2025-12-01** (new) | Search and get your deals, coupons, price discounts and basket promotions, their item selections and validation issues. | Pricing or Product Listing | New in 2026 | [promos] [relnotes] |
 | **Customer Feedback 2024-06-01** | Review topics and trends per ASIN or browse node. Return topics and trends per browse node only. | Brand Analytics or Selling Partner Insights | US, **UK**, FR, IT, DE, ES, JP. Weekly refresh, English only. | [cf] |
@@ -71,13 +71,13 @@ Roles are "need at least one of". "(R)" marks a restricted role. The role lists 
 | **Messaging v1** | Only which message types you can send for an order (`getMessagingActionsForOrder`, `GetAttributes`). **It does not read buyer messages.** | Buyer Communication | Send-only API | [messaging] [rmap] |
 | **Solicitations v1** | Whether you can request a review for an order. | Buyer Solicitation or Product Listing | Send-only | [solicit] [rmap] |
 | **A+ Content 2020-11-01** | Your A+ documents and ASIN links. | Brand Analytics or Product Listing | A+ is a brand-owner feature (Brand Registry requirement **unverified** in the API docs) | [models] [rmap] |
-| **Tokens v2021-03-01** | Issues Restricted Data Tokens. | Any role | — | [tokens] [rdt] |
-| **Merchant Fulfillment v0 / Shipping v2** | FBM label purchase, rates, tracking. | Direct to Consumer Shipping (R) (and Amazon Logistics for Shipping v2) | Only relevant if you ship FBM. For new builds, Merchant Fulfillment points to Shipping v2. | [mfn] [models] [rmap] |
+| **Tokens v2021-03-01** | Issues Restricted Data Tokens. | Any of Amazon Fulfillment, Buyer Communication, Buyer Solicitation, Finance and Accounting, Inventory and Order Tracking, Pricing, Product Listing, Selling Partner Insights, or the restricted Direct to Consumer Shipping, Professional Services, Tax Invoicing or Tax Remittance (not Brand Analytics) | — | [tokens] [rdt] |
+| **Merchant Fulfillment v0 / Shipping v2** | FBM label purchase, rates, tracking. | Merchant Fulfillment v0: Direct to Consumer Shipping (R). Shipping v2: Amazon Logistics or Direct to Consumer Shipping (R), except `purchaseShipment` (Amazon Logistics or Product Listing) and `getAccessPoints` (Direct to Consumer Shipping (R) only) | Only relevant if you ship FBM. For new builds, Merchant Fulfillment points to Shipping v2. | [mfn] [models] [rmap] |
 | **Easy Ship v2022-03-23** | Easy Ship packages and slots. | Direct to Consumer Shipping (R) | **Not available in the UK** (MX, IN, TR, AU, SG, JP, NL, PL …) | [easyship] |
 | **AWD v2024-05-09** | Amazon Warehousing & Distribution inventory and inbound shipments. | Amazon Warehousing and Distribution | **US store only** | [awd] [rmap] |
 | **Supply Sources v2020-07-01** | Configured supply sources (BOPIS / store pickup). | Selling Partner Insights | Not relevant to FBA | [supply] [rmap] |
 | **Services v1** | Home-services jobs. | Professional Services (R) | Not relevant | [services] |
-| **Vehicles v2024-11-01** | Vehicle compatibility lists. | (Not in the role map) | Auto parts only | [vehicles] |
+| **Vehicles v2024-11-01** | Vehicle compatibility lists. | Product Listing (EU region) | Auto parts only | [vehicles] |
 | **Invoices v2024-06-19 (seller)** | FBA invoices | Tax Invoicing (R) | **Brazil only** | [models] [invoices] |
 | Shipment Invoicing v0, Delivery by Amazon | Brazil FBA invoicing | Tax Invoicing (R) | **Brazil only** | [models] |
 | External Fulfillment (Inventory / Returns / Shipping v2024-09-11, Location v2026-07-30) | For sellers fulfilling Amazon orders from their own warehouses | Direct-to-Consumer Shipping (R) | Not relevant to FBA | [models] [rmap] [llms] |
@@ -113,7 +113,7 @@ Column key: **Req** = requested on demand, **Sch** = can be scheduled, **Auto** 
 | `GET_BRAND_ANALYTICS_SEARCH_CATALOG_PERFORMANCE_REPORT` | ASIN funnel (impressions to purchases) | Req | Brand Analytics + Brand Registry | WEEK/MONTH/QUARTER |
 | `GET_BRAND_ANALYTICS_MARKET_BASKET_REPORT` | Bought-together products | Req | Brand Analytics + Brand Registry | DAY to QUARTER |
 | `GET_BRAND_ANALYTICS_REPEAT_PURCHASE_REPORT` | Repeat purchase metrics | Req | Brand Analytics + Brand Registry | WEEK to QUARTER |
-| `GET_VENDOR_*` (8 types) | Vendor only | — | — | — |
+| `GET_VENDOR_*` (8 types) | Vendor only | Brand Analytics | — | — |
 
 ### 2.2 Order reports (restricted, contain PII) [rt-order] [rtypes]
 
@@ -140,11 +140,11 @@ Retained 30 days. Covers only orders **less than 2 years old**. All of these nee
 
 ### 2.4 Pending order reports [rt-order]
 
-`GET_FLAT_FILE_PENDING_ORDERS_DATA` (Req/Sch, JP), `GET_PENDING_ORDERS_DATA` (Sch, JP) and `GET_CONVERGED_FLAT_FILE_PENDING_ORDERS_DATA` (Req/Sch, Product Listing). All are pending FBM orders with a 38-day lookback.
+`GET_FLAT_FILE_PENDING_ORDERS_DATA` (Req/Sch, JP), `GET_PENDING_ORDERS_DATA` (Sch, JP), both Inventory and Order Tracking, and `GET_CONVERGED_FLAT_FILE_PENDING_ORDERS_DATA` (Req/Sch, Product Listing). All are pending FBM orders with a 38-day lookback.
 
 ### 2.5 Returns reports: FBM (seller-fulfilled) returns only [rt-ret]
 
-All six are Req/Sch and allow up to **60 days of data per report**. Roles: Inventory and Order Tracking or DTC Shipping (R). The Prime/attribute variants also accept Pricing. **They exclude FBA returns**; use [`GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA`](fba_returns.md) for those.
+All six are Req/Sch and allow up to **60 days of data per report**. Roles: Inventory and Order Tracking or DTC Shipping (R). The two Prime variants and `GET_FLAT_FILE_MFN_SKU_RETURN_ATTRIBUTES_REPORT` also accept Pricing; `GET_XML_MFN_SKU_RETURN_ATTRIBUTES_REPORT` doesn't. **They exclude FBA returns**; use [`GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA`](fba_returns.md) for those.
 
 `GET_XML_RETURNS_DATA_BY_RETURN_DATE`, [`GET_FLAT_FILE_RETURNS_DATA_BY_RETURN_DATE`](fbm_returns.md), `GET_XML_MFN_PRIME_RETURNS_REPORT`, `GET_CSV_MFN_PRIME_RETURNS_REPORT`, `GET_XML_MFN_SKU_RETURN_ATTRIBUTES_REPORT`, `GET_FLAT_FILE_MFN_SKU_RETURN_ATTRIBUTES_REPORT`.
 
@@ -155,7 +155,7 @@ All six are Req/Sch and allow up to **60 days of data per report**. Roles: Inven
 | [`GET_V2_SELLER_PERFORMANCE_REPORT`](account_health.md) | **Account Health dashboard**: account status per store, ODR (AFN/MFN), late shipment, pre-fulfilment cancel, valid tracking, on-time delivery (incl. unit level), invoice defect rate, **Account Health Rating** (status + score), policy violations (listing, restricted products, suspected IP, food/product safety, review policy, other), customer complaints (authenticity, condition, safety, received IP), document requests and warnings. JSON. | Req | Selling Partner Insights | Current snapshot. No date range is documented. "Warning states" is deprecated and always empty. |
 | [`GET_V1_SELLER_PERFORMANCE_REPORT`](account_health_v1.md) | XML customer metrics: ODR, cancellation, late shipment, policy violations, contact response time, return dissatisfaction etc. | Req | Selling Partner Insights | Not stated |
 | [`GET_SELLER_FEEDBACK_DATA`](seller_feedback.md) | Negative and neutral (1–3 star) feedback with comments, your response, order ID. Rater email is deprecated. | Req | Selling Partner Insights or Amazon Fulfillment | Not stated |
-| `GET_PROMOTION_PERFORMANCE_REPORT` | Best Deal / Lightning Deal performance (glance views, units, revenue) | Req | Selling Partner Insights (sellers) | Promotion start up to **2 years** back |
+| `GET_PROMOTION_PERFORMANCE_REPORT` | Best Deal / Lightning Deal performance (glance views, units, revenue) | Req | Selling Partner Insights or Brand Analytics (Amazon's report page: Selling Partner Insights for sellers, Brand Analytics for vendors) | Promotion start up to **2 years** back |
 | `GET_COUPON_PERFORMANCE_REPORT` | Coupon clips, redemptions, budget, sales | Req | **Brand Analytics** | Up to **2 years** back |
 
 ### 2.7 Settlement / payments [rt-settle] [rt-pay] [deprec] [auto-reports]
@@ -177,8 +177,8 @@ Generation limits: "near real-time" reports regenerate at most every 30 minutes,
 | Sales | `GET_AMAZON_FULFILLED_SHIPMENTS_DATA_TAX` | NA tax variant | Req | Tax Remittance (R) + RDT | ≤1 month |
 | Sales | [`GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_SALES_DATA`](fba_shipment_sales.md) | Item-level shipped sales | Req | Amazon Fulfillment | Not stated |
 | Sales | `GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_PROMOTION_DATA` | Promotions on FBA orders | Req | Amazon Fulfillment, Pricing | **NA only** |
-| Sales | `GET_FBA_FULFILLMENT_CUSTOMER_TAXES_DATA` | Legacy US tax | Req | — | Data only up to Feb 2013 (effectively dead) |
-| Sales | `GET_REMOTE_FULFILLMENT_ELIGIBILITY` | NARF eligibility | Req | — | US |
+| Sales | `GET_FBA_FULFILLMENT_CUSTOMER_TAXES_DATA` | Legacy US tax | Req | Amazon Fulfillment or Tax Remittance (R) | Data only up to Feb 2013 (effectively dead) |
+| Sales | `GET_REMOTE_FULFILLMENT_ELIGIBILITY` | NARF eligibility | Req | Amazon Fulfillment or Inventory and Order Tracking | US |
 | Inventory | `GET_AFN_INVENTORY_DATA` | Fulfillable quantity by SKU and condition | Req | Amazon Fulfillment | Live |
 | Inventory | [`GET_AFN_INVENTORY_DATA_BY_COUNTRY`](inventory_by_country.md) | Multi-country inventory | Req | Amazon Fulfillment, Pricing | EU only |
 | Inventory | [`GET_LEDGER_SUMMARY_VIEW_DATA`](ledger_summary.md) | Inventory "bank statement" (opening balance, receipts, shipments, returns, adjustments, removals, closing balance) | Req | Amazon Fulfillment | Range must align to the period (DAILY/WEEKLY/MONTHLY). History not stated. |
@@ -204,7 +204,7 @@ Generation limits: "near real-time" reports regenerate at most every 30 minutes,
 
 ### 2.9 Inventory / listings reports [rt-inv] [rtypes]
 
-Roles for most of these: Inventory and Order Tracking, Pricing, Product Listing (or DTC Shipping (R)). All are Req only, except [`GET_MERCHANTS_LISTINGS_FYP_REPORT`](suppressed_listings.md), which is Req/Sch. All are current-state snapshots.
+Roles for most of these: any one of Inventory and Order Tracking, Pricing, Product Listing or DTC Shipping (R). Exceptions: `GET_MERCHANT_LISTINGS_INACTIVE_DATA` doesn't take DTC Shipping; `GET_PAN_EU_OFFER_STATUS` also takes Amazon Fulfillment; `GET_MERCHANTS_LISTINGS_FYP_REPORT` is Product Listing only and `GET_REFERRAL_FEE_PREVIEW_REPORT` Finance and Accounting only; Amazon names no role for `GET_MFN_PANEU_OFFER_STATUS`. All are Req only, except [`GET_MERCHANTS_LISTINGS_FYP_REPORT`](suppressed_listings.md), which is Req/Sch. All are current-state snapshots.
 
 | reportType | Content |
 |---|---|
@@ -245,8 +245,8 @@ Roles for most of these: Inventory and Order Tracking, Pricing, Product Listing 
 
 - `FEE_DISCOUNTS_REPORT`: referral-fee discounts for Amazon Business sellers. Req/Sch, Product Listing role, once per 24 hours **[rt-ab]**.
 - `GET_B2B_PRODUCT_OPPORTUNITIES_RECOMMENDED_FOR_YOU` and `GET_B2B_PRODUCT_OPPORTUNITIES_NOT_YET_ON_AMAZON`: up to 10,000 sourcing recommendations, refreshed weekly. Includes **UK**. Product Listing role **[rt-b2b]**.
-- `GET_EASYSHIP_DOCUMENTS`, `GET_EASYSHIP_PICKEDUP`, `GET_EASYSHIP_WAITING_FOR_PICKUP`: DTC Shipping (R). Easy Ship isn't available in the UK **[rt-es] [easyship]**.
-- `GET_XML_BROWSE_TREE_DATA`: the category tree. Req/Sch **[rt-bt]**.
+- `GET_EASYSHIP_DOCUMENTS`: DTC Shipping (R) or Tax Invoicing (R). `GET_EASYSHIP_PICKEDUP`, `GET_EASYSHIP_WAITING_FOR_PICKUP`: DTC Shipping (R). Easy Ship isn't available in the UK **[rt-es] [easyship]**.
+- `GET_XML_BROWSE_TREE_DATA`: the category tree. Req/Sch. Roles: Inventory and Order Tracking, Pricing, Product Listing or DTC Shipping (R) **[rt-bt]**.
 
 ### 2.14 Report types in Amazon's role map but not on any report-type page (availability unverified) [rtypes]
 
@@ -339,7 +339,7 @@ This table covers the Orders API only. The Amazon Fulfilled Shipments report ([f
 **Restricted reports that matter to a UK FBA seller:**
 
 - `SC_VAT_TAX_REPORT`, `GET_VAT_TRANSACTION_DATA`, `GET_FLAT_FILE_VAT_INVOICE_DATA_REPORT`, `GET_AMAZON_FULFILLED_SHIPMENTS_DATA_INVOICING` and `FBA_BULK_INVOICE` all need **Tax Invoicing (R)** **[rt-tax] [rt-invoice] [rt-fba] [rt-reg]**.
-- All 7 order reports in §2.2 and all FBM returns reports touch DTC Shipping (R) **[rt-order] [rt-ret]**.
+- The three shipping order reports in §2.2 (`GET_FLAT_FILE_ACTIONABLE_ORDER_DATA_SHIPPING`, `GET_ORDER_REPORT_DATA_SHIPPING`, `GET_FLAT_FILE_ORDER_REPORT_DATA_SHIPPING`) need DTC Shipping (R); the two invoicing ones need Tax Invoicing (R) and the two tax ones Tax Remittance (R). The FBM returns reports accept DTC Shipping (R) but don't need it: Inventory and Order Tracking is enough **[rt-order] [rt-ret]**.
 
 **Can a private seller app get restricted roles, and how hard is approval?**
 

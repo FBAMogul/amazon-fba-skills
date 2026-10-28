@@ -33,8 +33,8 @@ Tick only what you'll use: the AUP says "Do not request access to or retrieve In
 
 | Role | What it gets in this pack |
 |---|---|
-| Inventory and Order Tracking | `orders`, `fba_shipments`, `fbm_returns`, `listings_all` |
-| Amazon Fulfillment | FBA stock, ledger, reimbursements, returns, removals, storage fees, fee preview, inbound plans, `fba_shipment_sales` |
+| Inventory and Order Tracking | `orders`, `fba_shipments`, `fbm_returns`, `listings_all`, `pan_eu_status` |
+| Amazon Fulfillment | FBA stock, ledger, reimbursements, returns, removals, storage fees, fee preview, inbound plans, inbound problems (`inbound_noncompliance`), `fba_shipment_sales`; also `orders`, `fba_shipments`, `seller_feedback`, `pan_eu_status` |
 | Finance and Accounting | `transactions`, `settlements`, `account` |
 | Selling Partner Insights | `account_health`, `account_health_v1`, `seller_feedback`, `store_list` |
 | Product Listing | `listings_all`, `suppressed_listings`, `pan_eu_status`, `store_list`; also gating checks (Listings Restrictions) |
