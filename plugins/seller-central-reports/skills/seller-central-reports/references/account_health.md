@@ -61,7 +61,7 @@ How to read the table:
 | `performanceMetrics[].preFulfillmentCancellationRate` | Pre-fulfilment cancellation rate: common fields plus `orderCount`, `cancellationCount` and `rate`. | `targetValue` `0.025`. 7-day period. |
 | `performanceMetrics[].warningStates` | Seller warning states. | Deprecated; an empty array. |
 | `performanceMetrics[].accountHealthRating.ahrStatus` | Overall Account Health Rating status for the period. | The schema says it "could be GREAT or WARNED" (under the name `accountHealthRatingStatus`). |
-| `performanceMetrics[].accountHealthRating.ahrScore` | The Account Health Rating score, 0 to 1,000 ([Account Health Rating](https://sellercentral.amazon.co.uk/help/hub/reference/external/GR786P4BPEVKTBAG)). | Exactly `200.0` in stores with no orders, which looks like a default. |
+| `performanceMetrics[].accountHealthRating.ahrScore` | The Account Health Rating score, 0 to 1,000 ([Account Health Rating](https://sellercentral.amazon.co.uk/help/hub/reference/external/GR786P4BPEVKTBAG)). | Exactly `200.0` in stores with no orders: "All new sellers start with a score of 200" ([Amazon staff reply](https://sellercentral.amazon.co.uk/seller-forums/discussions/t/ac4e415ecf60528188b463d1a0e1ca74)), so it's the starting rating, not one earned from orders. |
 | `performanceMetrics[].accountHealthRating.reportingDateRange` | Period of the rating. | 181 days: one day longer than the listing-level objects' 180. |
 | `performanceMetrics[].listingPolicyViolations`, `productAuthenticityCustomerComplaints`, `productConditionCustomerComplaints`, `productSafetyCustomerComplaints`, `receivedIntellectualPropertyComplaints`, `restrictedProductPolicyViolations`, `suspectedIntellectualPropertyViolations`, `foodAndProductSafetyIssues`, `customerProductReviewsPolicyViolations`, `otherPolicyViolations`, `documentRequests` | One object each, in the listing-level shape. | 180-day period. `customerProductReviewsPolicyViolations` isn't in the schema but is in the file. |
 | `….<listing-level>.defectsCount` | Number of defects in the period for that store. | `targetValue` `0`, `targetCondition` `EQUALS`. |
@@ -88,7 +88,7 @@ None. No buyer or business personal details.
 
 Seen in a real UK seller's file (Oct 2026):
 
-- **Stores with no orders still get a full block,** with zero counts and an `ahrScore` of exactly `200.0`, which looks like a default for a store with no orders. Don't read it as a real score.
+- **Stores with no orders still get a full block,** with zero counts and an `ahrScore` of exactly `200.0`. That's the rating every new seller starts at ([Amazon staff reply](https://sellercentral.amazon.co.uk/seller-forums/discussions/t/ac4e415ecf60528188b463d1a0e1ca74)): report it as the starting rating, not a score earned from orders, and keep it as the baseline for later copies.
 - **A `BAD` status doesn't say why.** The file gives counts only; it doesn't name the ASIN or notice behind a `BAD` status. The Account Health page in Seller Central does. Amazon's Listings Items API may show some of them as issues on a listing (see [`not-in-the-api.md`](not-in-the-api.md)).
 - **The rate scale is unconfirmed.** The real `rate` values don't show whether rates are fractions (like `targetValue`) or percentages.
 - **`unitOnTimeDeliveryRate` is present** for UK and EU stores, not just the US as the schema says.
