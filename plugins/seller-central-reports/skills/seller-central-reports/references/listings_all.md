@@ -57,7 +57,7 @@ Source: [SP-API inventory reports](https://developer-docs.amazon/sp-api/docs/rep
 
 ## Downloaded from Seller Central
 
-**The same file as the API's.** Seen in a real UK seller's Seller Central download (Oct 2026), UK store: tab-separated, UTF-8 with a byte order mark, lines ending in LF, and the same 31 columns as above, from `item-name` to `Sell remainder`. Special characters in SKUs come through as plain text (a `£` is `£`). Seller Central offers no CSV for this report.
+**The same file as the API's.** Seen in a real UK seller's Seller Central download (Oct 2026), one store: tab-separated, UTF-8 with a byte order mark, lines ending in LF, and the same 31 columns as above, from `item-name` to `Sell remainder`. Special characters in SKUs come through as plain text (a `£` is `£`). Seller Central offers no CSV for this report.
 
 The file is named `All+Listings+Report_MM-DD-YYYY.txt`, by the day you download it (in US date order), not by anything in it. Customising the columns may change the file, so read columns by name. For traps shared by all Seller Central downloads, see [seller-central-downloads](seller-central-downloads.md).
 

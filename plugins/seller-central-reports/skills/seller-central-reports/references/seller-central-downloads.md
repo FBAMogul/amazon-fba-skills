@@ -79,7 +79,7 @@ The download seems to follow the columns chosen under Show/Hide Columns, so a fi
 
 ### SKU Economics CSV columns
 
-Seen with Great Britain, MSKU level, one month and every data box ticked. Fewer boxes probably give fewer columns (not checked). One row per MSKU in the catalogue, including those with no sales in the period.
+Seen with one store selected, MSKU level, one month and every data box ticked. Fewer boxes probably give fewer columns (not checked). One row per MSKU in the catalogue, including those with no sales in the period.
 
 - **Product and sales:** `Amazon store` (a country code, e.g. `GB`), `Start date`, `End date`, `Parent ASIN`, `ASIN`, `FNSKU`, `MSKU`, `Currency code`, `Average sales price`, `Units sold`, `Units returned`, `Net units sold`, `Sales`, `Net sales`.
 - **Fees, three columns each** (`<fee> per unit`, `<fee> quantity`, `<fee> total`), for: Aged inventory surcharge; Base fulfilment fee; Base monthly storage fee; Digital Services Fee (FBA Fulfilment fees); Digital Services Fee (Selling on Amazon fees); FBA Inventory Reimbursement; FBA disposal order fee; FBA removal order fee; Fuel and logistics-related surcharge; Fulfilment by Amazon fulfilment fees; Inbound Transportation Fee; Inbound Transportation Program Fee; Monthly storage fee; Referral Fee Refunds; Referral fee; Refund administration fee; Storage utilisation surcharge.
